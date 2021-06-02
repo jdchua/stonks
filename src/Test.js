@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
-import Highcharts from 'highcharts/highstock';
-import HighchartsReact from 'highcharts-react-official';
+import TextField from '@material-ui/core/TextField';
+
+const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=%23222222&amp;textColor=white";
 
 class Test extends React.Component {
     constructor(props){
@@ -9,36 +10,22 @@ class Test extends React.Component {
         this.state = {
           ticker: [],
           tickerDailyQuote: [],
-          chartOptions: {
-              series: [{
-                  data: [1, 2, 3]
-              }]
-          }
+          data: [],
+          chartUrl: ""
         }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-   options = {
-        title: {
-          text: 'My chart'
-        },
-        series: [
-          {
-            data: [1, 2, 1, 4, 3, 6, 7, 3, 8, 6, 9]
-          }
-        ]
-      };
-
     getTicker = () => {
-        axios.get(`https://finnhub.io/api/v1/search?q=apple&token=c1lmcqq37fkqle0e1u80`)
+        axios.get(`https://finnhub.io/api/v1/search?q=draftkings&token=c1lmcqq37fkqle0e1u80`)
         .then(({ data }) => {
-            // console.log("Test");
-            // console.log(data.result[0].displaySymbol);
             this.setState({ticker: data.result[0].displaySymbol});
+            this.setState({chartUrl: CHART_URL + "&symbol=" + data.result[0].displaySymbol});
         })
     }
 
     getTickerDailyQuote = () => {
-        axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=c1lmcqq37fkqle0e1u80`)
+        axios.get(`https://finnhub.io/api/v1/quote?symbol=DKNG&token=c1lmcqq37fkqle0e1u80`)
         .then(({ data }) => {
             let dailyQuoteArray = Object.values(data)
             console.log(dailyQuoteArray[0]);
@@ -47,15 +34,15 @@ class Test extends React.Component {
     }
 
     getTickerCandles = () => {
-        axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=1&from=1615298999&to=1615302599&token=c1lmcqq37fkqle0e1u80`)
+        axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=D&from=1615298999&to=1622682167&token=c1lmcqq37fkqle0e1u80`)
         .then(({ data }) => {
             let test = Object.values(data)
-            let allArrs = [];
-            console.log(test[0].length);
-            console.log(test[0]);
-            console.log(allArrs);
-            // this.setState({tickerDailyQuote: dailyQuoteArray[0]});
+            this.setState({data: test[0]});
         })
+    }
+
+    handleSubmit (event) {
+        alert(this.inputRef.value);
     }
 
     componentDidMount() {
@@ -67,17 +54,13 @@ class Test extends React.Component {
     render (){
         return (
             <div>
-                <h1>TEST123</h1>
+                <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                    <TextField inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined" />
+                </form>
                 <p>{this.state.ticker}</p>
                 <p>{this.state.tickerDailyQuote}</p>
-                <HighchartsReact 
-                    highcharts={Highcharts} 
-                    constructorType={'stockChart'} 
-                    options={this.options} 
-                />
-
+                <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl}></iframe>
             </div>
-
         )
     }
 }
