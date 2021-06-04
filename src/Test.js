@@ -11,7 +11,7 @@ class Test extends React.Component {
         super()
         this.state = {
           ticker: [],
-          tickerDailyQuote: [],
+          tickerDailyQuote: "",
           data: [],
           chartUrl: "",
           query: ""
@@ -21,20 +21,11 @@ class Test extends React.Component {
 
     handleSubmit (event) {
         event.preventDefault();
-    }
-    
-    
-    handleInputChange = () => {
-        this.setState({query: this.inputRef.value},  () => {
-            this.getTicker();
-        });
-    }
-
-    getTicker = () => {
+        console.log(this.state.ticker);
         let query = this.state.query;
         axios.get(`${TICKER_URL}&q=${query.replace(/\s/g, "")}`)
         .then(({ data }) => {
-            this.setState({ticker: data.result[0].displaySymbol}, () => {
+            this.setState({ticker: [data.result[0].displaySymbol]}, () => {
                 axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker}`)
                 .then(({ data }) => {
                     let dailyQuoteArray = Object.values(data);
@@ -45,27 +36,9 @@ class Test extends React.Component {
         })
     }
 
-    // getTickerDailyQuote = () => {
-    //     // let ticker = this.state.ticker;
-    //     // console.log("TEST" + this.state.ticker);
-    //     axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker}`)
-    //     .then(({ data }) => {
-    //         let dailyQuoteArray = Object.values(data);
-    //         this.setState({tickerDailyQuote: dailyQuoteArray[0]});
-    //     })
-    // }
-
-    // getTickerCandles = () => {
-    //     axios.get(`https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=D&from=1615298999&to=1622682167&token=c1lmcqq37fkqle0e1u80`)
-    //     .then(({ data }) => {
-    //         let test = Object.values(data)
-    //         this.setState({data: test[0]});
-    //     })
-    // }
-
-    componentDidMount() {
-        //   this.getTickerDailyQuote();
-        //   this.getTickerCandles();
+    handleInputChange = () => {
+        this.setState({query: this.inputRef.value}, () => {
+        }); 
     }
 
     render (){
@@ -74,7 +47,7 @@ class Test extends React.Component {
                 <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                     <TextField onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined" />
                 </form>
-                <p>{this.state.ticker}</p>
+                <p>{this.state.ticker[0]}</p>
                 <p>{this.state.tickerDailyQuote}</p>
                 <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl}></iframe>
             </div>
