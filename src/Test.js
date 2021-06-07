@@ -13,7 +13,7 @@ class Test extends React.Component {
         this.state = {
           ticker: [],
           tickerDailyQuote: "",
-          tickerData: [],
+          closingData: [],
           chartUrl: "",
           query: ""
         }
@@ -33,9 +33,17 @@ class Test extends React.Component {
                 });
                 axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker}`)
                 .then(({data}) => {
-                    this.setState({tickerData: data["c"]})
-
-                    console.log(this.state.tickerData);
+                    // console.log(Object.entries(data));
+                    let test = Object.entries(data);
+                    console.log(Object.keys(test));
+                    Object.keys(test).forEach(function (key) {
+                        if (test[key] === "c") {
+                            delete test[key];
+                        }
+                    });
+                    this.setState({closingData: this.state.closingData.concat(test[0])});
+                    console.log(this.state.closingData);
+                    // Need to remove "c" entries 
                 }) 
             });
             this.setState({chartUrl: CHART_URL + "&symbol=" + data.result[0].displaySymbol});
@@ -65,7 +73,7 @@ class Test extends React.Component {
                 </form>
                 <p>{this.state.ticker[0]}</p>
                 <p>{this.state.tickerDailyQuote}</p>
-                <p>{this.state.tickerData}</p>
+                <p>{this.state.closingData[0]}</p>
                 <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl}></iframe>
             </div>
         )
