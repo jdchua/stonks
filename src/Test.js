@@ -20,8 +20,6 @@ class Test extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-// FIGURE OUT WHERE TICKER STATE IS BEING MANIPULATED
-
     handleSubmit (event) {
         event.preventDefault();
         let query = this.state.query;
@@ -31,40 +29,18 @@ class Test extends React.Component {
                 console.log(this.state.ticker);
                 axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({ data }) => {
-                    // console.log(this.state.ticker);
                     let dailyQuoteArray = Object.values(data);
                     this.setState({tickerDailyQuote: this.state.tickerDailyQuote.concat(dailyQuoteArray[0])});
                 });
                 axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({data}) => {
-                    // console.log(Object.entries(data));
                     let test = Object.entries(data);
-                    // console.log(Object.keys(test));
-                    // let testing = this.state.closingData;
-                    // Object.keys(testing).forEach(function (key) {
-                    //     if (testing[key] === "c") {
-                    //         delete testing[key];
-                    //     }
-                    // });
                     this.setState({closingData: this.state.closingData.concat(test[0])});
-                    // console.log(Object.keys(this.state.closingData));
-                    // console.log(this.state.closingData);
-                    // Need to remove "c" entries 
                 }) 
             });
             this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
         })
     }
-
-    // getStockCandle () {
-    //     axios.get("https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=1&from=1615298999&to=1615302599&token=c1lmcqq37fkqle0e1u80")
-    //     .then(({data}) => {
-    //         // console.log(this.state.tickerData);
-    //         this.setState({tickerData: this.state.tickerData.push(data["c"])})
-    //         // console.log(this.state.tickerData);
-    //         // console.log(data["c"]);
-    //     }) 
-    // }
 
     handleInputChange = () => {
         this.setState({query: this.inputRef.value}, () => {
@@ -77,11 +53,9 @@ class Test extends React.Component {
                 <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                     <TextField onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined" />
                 </form>
-                {/* <p>{this.state.ticker[0]}</p> */}
                 {this.state.ticker.map((x, index) => (
                     <p key={index}> {x}</p>
                 ))}
-
                 {this.state.tickerDailyQuote.map((x, index) => (
                     <p key={index}> {x}</p>
                 ))}
@@ -91,7 +65,6 @@ class Test extends React.Component {
                 {this.state.chartUrl.map((x, index) => (
                     <iframe title="chart" width="50%" frameborder="0" height="500" src={x}></iframe>
                 ))}
-                    {/* <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl[0]}></iframe> */}
             </div>
         )
     }
