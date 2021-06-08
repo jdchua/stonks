@@ -12,41 +12,47 @@ class Test extends React.Component {
         super()
         this.state = {
           ticker: [],
-          tickerDailyQuote: "",
+          tickerDailyQuote: [],
           closingData: [],
-          chartUrl: "",
+          chartUrl: [],
           query: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+// FIGURE OUT WHERE TICKER STATE IS BEING MANIPULATED
 
     handleSubmit (event) {
         event.preventDefault();
         let query = this.state.query;
         axios.get(`${TICKER_URL}&q=${query.replace(/\s/g, "")}`)
         .then(({ data }) => {
-            this.setState({ticker: [data.result[0].displaySymbol]}, () => {
-                axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker}`)
+            this.setState({ticker: this.state.ticker.concat([data.result[0].displaySymbol])}, () => {
+                console.log(this.state.ticker);
+                axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({ data }) => {
+                    // console.log(this.state.ticker);
                     let dailyQuoteArray = Object.values(data);
-                    this.setState({tickerDailyQuote: dailyQuoteArray[0]});
+                    this.setState({tickerDailyQuote: this.state.tickerDailyQuote.concat(dailyQuoteArray[0])});
                 });
-                axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker}`)
+                axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({data}) => {
                     // console.log(Object.entries(data));
                     let test = Object.entries(data);
-                    console.log(Object.keys(test));
-                    Object.keys(test).forEach(function (key) {
-                        if (test[key] === "c") {
-                            delete test[key];
-                        }
-                    });
+                    // console.log(Object.keys(test));
+                    // let testing = this.state.closingData;
+                    // Object.keys(testing).forEach(function (key) {
+                    //     if (testing[key] === "c") {
+                    //         delete testing[key];
+                    //     }
+                    // });
                     this.setState({closingData: this.state.closingData.concat(test[0])});
-                    console.log(this.state.closingData);
+                    // console.log(Object.keys(this.state.closingData));
+                    // console.log(this.state.closingData);
                     // Need to remove "c" entries 
                 }) 
             });
-            this.setState({chartUrl: CHART_URL + "&symbol=" + data.result[0].displaySymbol});
+            this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
         })
     }
 
@@ -65,16 +71,27 @@ class Test extends React.Component {
         }); 
     }
 
-    render (){
+    render () {
         return (
             <div>
                 <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                     <TextField onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined" />
                 </form>
-                <p>{this.state.ticker[0]}</p>
-                <p>{this.state.tickerDailyQuote}</p>
-                <p>{this.state.closingData[0]}</p>
-                <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl}></iframe>
+                {/* <p>{this.state.ticker[0]}</p> */}
+                {this.state.ticker.map((x, index) => (
+                    <p key={index}> {x}</p>
+                ))}
+
+                {this.state.tickerDailyQuote.map((x, index) => (
+                    <p key={index}> {x}</p>
+                ))}
+                {this.state.closingData.map((x, index) => (
+                    <p key={index}> {index % 2 === 1 && x}</p>
+                ))}
+                {this.state.chartUrl.map((x, index) => (
+                    <iframe title="chart" width="50%" frameborder="0" height="500" src={x}></iframe>
+                ))}
+                    {/* <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl[0]}></iframe> */}
             </div>
         )
     }
