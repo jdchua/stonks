@@ -36,6 +36,7 @@ class Test extends React.Component {
                 .then(({data}) => {
                     let test = Object.entries(data);
                     this.setState({closingData: this.state.closingData.concat(test[0])});
+                    console.log(this.state.closingData);
                 }) 
             });
             this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
@@ -57,10 +58,15 @@ class Test extends React.Component {
                     <p key={index}> {x}</p>
                 ))}
                 {this.state.tickerDailyQuote.map((x, index) => (
-                    <p key={index}> {x}</p>
+                    <p key={index}>{x}</p>
                 ))}
-                {this.state.closingData.map((x, index) => (
+                {/* {this.state.closingData.map((x, index) => (
                     <p key={index}> {index % 2 === 1 && x}</p>
+                ))} */}
+                {this.state.closingData.map((x, index) => (
+                    <div key={index}> {index % 2 === 1 && x.map((x) => (
+                        <p>{x}</p>
+                    ))}</div>
                 ))}
                 {this.state.chartUrl.map((x, index) => (
                     <iframe title="chart" width="50%" frameborder="0" height="500" src={x}></iframe>
