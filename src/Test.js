@@ -26,7 +26,6 @@ class Test extends React.Component {
         axios.get(`${TICKER_URL}&q=${query.replace(/\s/g, "")}`)
         .then(({ data }) => {
             this.setState({ticker: this.state.ticker.concat([data.result[0].displaySymbol])}, () => {
-                console.log(this.state.ticker);
                 axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({ data }) => {
                     let dailyQuoteArray = Object.values(data);
@@ -34,9 +33,8 @@ class Test extends React.Component {
                 });
                 axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({data}) => {
-                    let test = Object.entries(data);
-                    this.setState({closingData: this.state.closingData.concat(test[0])});
-                    console.log(this.state.closingData);
+                    let tickerData = Object.entries(data);
+                    this.setState({closingData: [...this.state.closingData, [...tickerData[0][1]]]});
                 }) 
             });
             this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
@@ -44,8 +42,7 @@ class Test extends React.Component {
     }
 
     handleInputChange = () => {
-        this.setState({query: this.inputRef.value}, () => {
-        }); 
+        this.setState({query: this.inputRef.value}); 
     }
 
     render () {
@@ -54,23 +51,18 @@ class Test extends React.Component {
                 <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                     <TextField onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined" />
                 </form>
+
                 {this.state.ticker.map((x, index) => (
-                    <p key={index}> {x}</p>
+                    <div>
+                        <p>TICKER: {this.state.ticker[index]}</p>
+                        <p>CURRENT PRICE: {this.state.tickerDailyQuote[index]}</p>
+                        {this.state.closingData[index] && this.state.closingData[index].map((x, index) => (
+                            <p>{x}</p>
+                        ))}
+                        <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
+                    </div>
                 ))}
-                {this.state.tickerDailyQuote.map((x, index) => (
-                    <p key={index}>{x}</p>
-                ))}
-                {/* {this.state.closingData.map((x, index) => (
-                    <p key={index}> {index % 2 === 1 && x}</p>
-                ))} */}
-                {this.state.closingData.map((x, index) => (
-                    <div key={index}> {index % 2 === 1 && x.map((x) => (
-                        <p>{x}</p>
-                    ))}</div>
-                ))}
-                {this.state.chartUrl.map((x, index) => (
-                    <iframe title="chart" width="50%" frameborder="0" height="500" src={x}></iframe>
-                ))}
+                
             </div>
         )
     }
