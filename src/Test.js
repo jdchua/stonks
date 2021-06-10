@@ -20,6 +20,14 @@ class Test extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+//Setup new states:
+    // - Open 
+    // - Low
+    // - High
+    // - Date
+        // - Need to convert unix timestamp to month-day-year
+//Have states displayed properly
+
     handleSubmit (event) {
         event.preventDefault();
         let query = this.state.query;
