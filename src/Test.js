@@ -13,7 +13,7 @@ import Paper from '@material-ui/core/Paper';
 const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=%23222222&amp;textColor=white";
 const TICKER_URL = "https://finnhub.io/api/v1/search?token=c1lmcqq37fkqle0e1u80";
 const DAILYQUOTE_URL = "https://finnhub.io/api/v1/quote?token=c1lmcqq37fkqle0e1u80";
-const TICKERDATA_URL = "https://finnhub.io/api/v1/stock/candle?resolution=D&from=1615298999&token=c1lmcqq37fkqle0e1u80"
+const TICKERDATA_URL = "https://finnhub.io/api/v1/stock/candle?resolution=D&token=c1lmcqq37fkqle0e1u80";
 
 class Test extends React.Component {
     constructor(props){
@@ -27,17 +27,26 @@ class Test extends React.Component {
           openData: [],
           dateData: [],
           chartUrl: [],
+          tickerDescription: [],
           query: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
 // Data Table
-    // - Show only 10 rows, hide the rest
+    // - Show only 10 rows
     // - Border bottom for rows?
     // - Closing data
         // - green arrow = close > open
         // - red arrow = close < open
+// Stonk Info
+    // - 52 week high
+    // - 52 week low
+    // - Closing quote for today
+// Layout Exmaples
+    // - Google Finance
+// Difference today
+    // - Add a "+" to positive difference
 
     handleSubmit (event) {
         event.preventDefault();
@@ -48,9 +57,9 @@ class Test extends React.Component {
                 axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({ data }) => {
                     let dailyQuoteArray = Object.values(data);
-                    this.setState({tickerDailyQuote: this.state.tickerDailyQuote.concat(dailyQuoteArray[0])});
+                    this.setState({tickerDailyQuote: this.state.tickerDailyQuote.concat(dailyQuoteArray[0].toPrecision(4))});
                 });
-                axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${Date.now() - 5184000}&to=${Date.now()}`)
+                axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${Math.round(Date.now() / 1000) - 864000}&to=${Date.now()}`)
                 .then(({data}) => {
                     let tickerData = Object.entries(data);
                     this.setState({closingData: [...this.state.closingData, [...tickerData[0][1]]]});
@@ -60,6 +69,7 @@ class Test extends React.Component {
                     this.setState({dateData: [...this.state.dateData, [...tickerData[5][1]]]});
                 }) 
             });
+            this.setState({tickerDescription: this.state.tickerDescription.concat(data.result[0].description.split("-", 1))});
             this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
         })
     }
@@ -72,13 +82,17 @@ class Test extends React.Component {
         return (
             <div>
                 <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                    <TextField onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined" />
+                    <TextField className="searchInput" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined"/>
                 </form>
                 {this.state.ticker.map((x, index) => (
-                    <div>
-                        <p>TICKER: {this.state.ticker[index]}</p>
-                        <p>CURRENT PRICE: {this.state.tickerDailyQuote[index]}</p>
-                        
+                    <div className="main">
+                        <p>{this.state.tickerDescription[index]}</p>
+                        <p>${this.state.tickerDailyQuote[index]}</p>
+                        <p>
+                            {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} 
+                            <span class="today">Today</span>
+                        </p>
+                        <iframe className="chart" title="Candle chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
                         <TableContainer className="dataTable" component={Paper}>
                             <Table size="small" aria-label="a dense table">
                                 <TableHead>
@@ -121,24 +135,6 @@ class Test extends React.Component {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-
-
-                        {/* {this.state.closingData[index] && this.state.closingData[index].map((x, index) => (
-                            <p>Closing: {x}</p>
-                        ))} */}
-                        {/* {this.state.highData[index] && this.state.highData[index].map((x, index) => (
-                            <p>High: {x}</p>
-                        ))} */}
-                        {/* {this.state.lowData[index] && this.state.lowData[index].map((x, index) => (
-                            <p>Low: {x}</p>
-                        ))} */}
-                        {/* {this.state.openData[index] && this.state.openData[index].map((x, index) => (
-                            <p>Open: {x}</p>
-                        ))} */}
-                        {/* {this.state.dateData[index] && this.state.dateData[index].map((x, index) => (
-                            <p>Date: {(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p>
-                        ))} */}
-                        <iframe title="chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
                     </div>
                 ))}
             </div>

@@ -30,10 +30,28 @@
 
 .search {
   margin-top: 20px;
+  text-align: center;
+}
+
+.searchInput {
+  width: 35%;
 }
 
 .dataTable {
-  width: 60% !important;
+  width: 50% !important;
+  margin: 0 auto;
+}
+
+.main {
+  text-align: center;
+}
+
+.MuiTableCell-root {
+  text-align: center !important;
+}
+
+.today {
+  margin-left: 5px;
 }
 
 @keyframes App-logo-spin {
