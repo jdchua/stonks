@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import TextField from '@material-ui/core/TextField';
+import Navbar from "./Navbar";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -34,7 +35,7 @@ class Test extends React.Component {
     }
 
 // Data Table
-    // - Show only 10 rows
+    // - Show only 10 rows [x]
     // - Border bottom for rows?
     // - Closing data
         // - green arrow = close > open
@@ -47,6 +48,7 @@ class Test extends React.Component {
     // - Google Finance
 // Difference today
     // - Add a "+" to positive difference
+        // - if innerhtml doesnt contain "-", add "+"
 
     handleSubmit (event) {
         event.preventDefault();
@@ -81,13 +83,20 @@ class Test extends React.Component {
     render () {
         return (
             <div>
+            <Navbar />
+            <div>
                 <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                     <TextField className="searchInput" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined"/>
                 </form>
                 {this.state.ticker.map((x, index) => (
                     <div className="main">
+                        <button>Add To Portfolio [+]</button>
                         <p>{this.state.tickerDescription[index]}</p>
                         <p>${this.state.tickerDailyQuote[index]}</p>
+                        {/* <p>
+                            {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} 
+                            <span class="today">Today</span>
+                        </p> */}
                         <p>
                             {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} 
                             <span class="today">Today</span>
@@ -137,6 +146,7 @@ class Test extends React.Component {
                         </TableContainer>
                     </div>
                 ))}
+            </div>
             </div>
         )
     }
