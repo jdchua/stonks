@@ -44,6 +44,7 @@
 
 .main {
   text-align: center;
+  margin: 20px auto;
 }
 
 .MuiTableCell-root {
@@ -54,11 +55,7 @@
   margin-left: 5px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navStocks {
+  text-align: center;
+  margin: 0px 30px !important;
 }

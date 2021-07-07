@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import TextField from '@material-ui/core/TextField';
 import Navbar from "./Navbar";
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -83,70 +82,66 @@ class Test extends React.Component {
     render () {
         return (
             <div>
-            <Navbar />
-            <div>
-                <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                    <TextField className="searchInput" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined"/>
-                </form>
-                {this.state.ticker.map((x, index) => (
-                    <div className="main">
-                        <button>Add To Portfolio [+]</button>
-                        <p>{this.state.tickerDescription[index]}</p>
-                        <p>${this.state.tickerDailyQuote[index]}</p>
-                        {/* <p>
-                            {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} 
-                            <span class="today">Today</span>
-                        </p> */}
-                        <p>
-                            {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} 
-                            <span class="today">Today</span>
-                        </p>
-                        <iframe className="chart" title="Candle chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
-                        <TableContainer className="dataTable" component={Paper}>
-                            <Table size="small" aria-label="a dense table">
-                                <TableHead>
-                                <TableRow>
-                                    <TableCell>Date</TableCell>
-                                    <TableCell>High</TableCell>
-                                    <TableCell>Low</TableCell>
-                                    <TableCell>Open</TableCell>
-                                    <TableCell>Close</TableCell>
-                                </TableRow>
-                                </TableHead>
-                                <TableBody>
+                <Navbar />
+                <div>
+                    <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                        <TextField className="searchInput" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined"/>
+                    </form>
+                    {this.state.ticker.map((x, index) => (
+                        <div className="main">
+                            <button>Add To Portfolio [+]</button>
+                            <p>{this.state.tickerDescription[index]}</p>
+                            <p>${this.state.tickerDailyQuote[index]}</p>
+                            <p>
+                                {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} 
+                                <span class="today">Today</span>
+                            </p>
+                            <iframe className="chart" title="Candle chart" width="50%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
+                            <TableContainer className="dataTable" component={Paper}>
+                                <Table size="small" aria-label="a dense table">
+                                    <TableHead>
                                     <TableRow>
-                                        <TableCell>
-                                            {this.state.dateData[index] && this.state.dateData[index].map((x, index) => (
-                                                <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p>
-                                            ))}
-                                        </TableCell>
-                                        <TableCell>
-                                            {this.state.highData[index] && this.state.highData[index].map((x, index) => (
-                                                <p>{x}</p>
-                                            ))}
-                                        </TableCell>
-                                        <TableCell>
-                                            {this.state.lowData[index] && this.state.lowData[index].map((x, index) => (
-                                                <p>{x}</p>
-                                            ))}
-                                        </TableCell>
-                                        <TableCell>
-                                            {this.state.openData[index] && this.state.openData[index].map((x, index) => (
-                                                <p>{x}</p>
-                                            ))}
-                                        </TableCell>
-                                        <TableCell>
-                                            {this.state.closingData[index] && this.state.closingData[index].map((x, index) => (
-                                                <p>{x}</p>
-                                            ))}
-                                        </TableCell>
+                                        <TableCell>Date</TableCell>
+                                        <TableCell>High</TableCell>
+                                        <TableCell>Low</TableCell>
+                                        <TableCell>Open</TableCell>
+                                        <TableCell>Close</TableCell>
                                     </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </div>
-                ))}
-            </div>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell>
+                                                {this.state.dateData[index] && this.state.dateData[index].map((x, index) => (
+                                                    <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p>
+                                                ))}
+                                            </TableCell>
+                                            <TableCell>
+                                                {this.state.highData[index] && this.state.highData[index].map((x, index) => (
+                                                    <p>{x}</p>
+                                                ))}
+                                            </TableCell>
+                                            <TableCell>
+                                                {this.state.lowData[index] && this.state.lowData[index].map((x, index) => (
+                                                    <p>{x}</p>
+                                                ))}
+                                            </TableCell>
+                                            <TableCell>
+                                                {this.state.openData[index] && this.state.openData[index].map((x, index) => (
+                                                    <p>{x}</p>
+                                                ))}
+                                            </TableCell>
+                                            <TableCell>
+                                                {this.state.closingData[index] && this.state.closingData[index].map((x, index) => (
+                                                    <p>{x}</p>
+                                                ))}
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                    ))}
+                </div>
             </div>
         )
     }

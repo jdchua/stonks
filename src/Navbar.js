@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from "axios";
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -15,8 +16,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
 
 const drawerWidth = 240;
 
@@ -83,9 +84,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer() {
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [appl, setAppl] = React.useState(0);
+  const [amzn, setAmzn] = React.useState(0);
+  const [fb, setFb] = React.useState(0);
+  const [nflx, setNflx] = React.useState(0);
+  const [googl, setGoogl] = React.useState(0);
+  const [count, setCount] = React.useState(0);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -94,6 +102,25 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    axios.get(`https://finnhub.io/api/v1/quote?symbol=FB&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
+        setFb(data["c"].toPrecision(5));
+    });
+    axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
+        setAppl(data["c"].toPrecision(5));
+    });
+    axios.get(`https://finnhub.io/api/v1/quote?symbol=AMZN&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
+        setAmzn(data["c"].toPrecision(6));
+    });
+    axios.get(`https://finnhub.io/api/v1/quote?symbol=NFLX&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
+        setNflx(data["c"].toPrecision(5));
+    });
+    axios.get(`https://finnhub.io/api/v1/quote?symbol=GOOGL&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
+        setGoogl(data["c"].toPrecision(6));
+    });
+    setCount(1)
+  }, [count])
 
   return (
     <div className={classes.root}>
@@ -116,7 +143,30 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" className="navStocks" noWrap>
+            FB
+            <br />
+            {fb}
+          </Typography>
+          <Typography variant="h6" className="navStocks" noWrap>
+            APPL 
+            <br />
+            {appl}
+          </Typography>
+          <Typography variant="h6" className="navStocks" noWrap>
+            AMZN 
+            <br />
+            {amzn}
+          </Typography>
+          <Typography variant="h6" className="navStocks" noWrap>
+            NFLX 
+            <br />
+            {nflx}
+          </Typography>
+          <Typography variant="h6" className="navStocks" noWrap>
+            GOOGL 
+            <br />
+            {googl}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -140,22 +190,14 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Portfolio', 'Bookmarked'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon>{index % 2 === 0 ? <AccountCircleIcon /> : <BookmarkTwoToneIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
       <br></br>
       <br></br>
