@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import TextField from '@material-ui/core/TextField';
-import Navbar from "./Navbar";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -82,7 +81,6 @@ class Test extends React.Component {
     render () {
         return (
             <div>
-                <Navbar />
                 <div>
                     <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                         <TextField className="searchInput" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined"/>
