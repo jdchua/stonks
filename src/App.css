@@ -59,3 +59,7 @@
   text-align: center;
   margin: 0px 30px !important;
 }
+
+.MuiAppBar-colorPrimary {
+  background-color: #0c1652 !important;
+}
