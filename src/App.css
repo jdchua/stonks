@@ -38,7 +38,7 @@
 }
 
 .dataTable {
-  width: 50% !important;
+  width: 100% !important;
   margin: 0 auto;
 }
 
@@ -95,4 +95,14 @@ label {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
+}
+
+.negative {
+  color: red;
+  font-weight: bold;
+}
+
+.positive {
+  color: green;
+  font-weight: bold;
 }
