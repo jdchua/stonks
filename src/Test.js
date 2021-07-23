@@ -15,6 +15,10 @@ const DAILYQUOTE_URL = "https://finnhub.io/api/v1/quote?token=c1lmcqq37fkqle0e1u
 const TICKERDATA_URL = "https://finnhub.io/api/v1/stock/candle?resolution=D&token=c1lmcqq37fkqle0e1u80";
 const NEWS_URL = "https://finnhub.io/api/v1/company-news?token=c1lmcqq37fkqle0e1u80"
 
+const today = new Date()
+const yesterday = new Date(today)
+yesterday.setDate(yesterday.getDate() - 28);
+
 class Test extends React.Component {
     constructor(props){
         super()
@@ -28,6 +32,7 @@ class Test extends React.Component {
           dateData: [],
           chartUrl: [],
           tickerDescription: [],
+          news:[],
           query: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -76,9 +81,9 @@ class Test extends React.Component {
                     this.setState({openData: [...this.state.openData, [...tickerData[3][1]]]});
                     this.setState({dateData: [...this.state.dateData, [...tickerData[5][1]]]});
                 });
-                axios.get(`${NEWS_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${Math.round(Date.now() / 1000) - 864000}&to=${Date.now()}`)
+                axios.get(`${NEWS_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${yesterday.toISOString().split('T')[0]}&to=${today.toISOString().split('T')[0]}`)
                 .then(({ data }) => {
-                    console.log(data)                    
+                    this.setState({news: data});
                 });
             });
             this.setState({tickerDescription: []});
@@ -155,11 +160,17 @@ class Test extends React.Component {
                                 </Table>
                             </TableContainer>
                             </div>
-                            <div className="col-md-4">
-                                <p>NEWS</p>
-                            </div>
+                                <div className="col-md-4">
+                                    <p> Recent News</p>
+                                    {this.state.news.slice(0, 3).map((x, index) => (
+                                        <div className="col-md-12">
+                                            <a rel="noreferrer" target="_blank" href={x.url}>
+                                                <p>{x.headline}</p>
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>
                             <div className="col-md-1"></div>
-
                             </div>
                         </div>
                     ))}
