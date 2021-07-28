@@ -50,9 +50,6 @@ class Test extends React.Component {
     // - Closing quote for today
 // Layout Exmaples
     // - Google Finance
-// Difference today
-    // - Add a "+" to positive difference
-        // - if innerhtml doesnt contain "-", add "+"
 
     handleSubmit (event) {
         event.preventDefault();
@@ -152,7 +149,7 @@ class Test extends React.Component {
                                             </TableCell>
                                             <TableCell>
                                                 {this.state.closingData[index] && this.state.closingData[index].map((x, index) => (
-                                                    <p>{x}</p>
+                                                    <p>{x.toPrecision(4)}</p>
                                                 ))}
                                             </TableCell>
                                         </TableRow>
