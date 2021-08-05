@@ -8,19 +8,23 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=%23222222&amp;textColor=white";
 const TICKER_URL = "https://finnhub.io/api/v1/search?token=c1lmcqq37fkqle0e1u80";
 const DAILYQUOTE_URL = "https://finnhub.io/api/v1/quote?token=c1lmcqq37fkqle0e1u80";
 const TICKERDATA_URL = "https://finnhub.io/api/v1/stock/candle?resolution=D&token=c1lmcqq37fkqle0e1u80";
-const NEWS_URL = "https://finnhub.io/api/v1/company-news?token=c1lmcqq37fkqle0e1u80"
+const NEWS_URL = "https://finnhub.io/api/v1/company-news?token=c1lmcqq37fkqle0e1u80";
+const COMPANY_PROFILE_URL = "https://finnhub.io/api/v1/stock/profile2?token=c1lmcqq37fkqle0e1u80";
+const FINANCIALS_URL = "https://finnhub.io/api/v1/stock/metric?metric=all&token=c1lmcqq37fkqle0e1u80"
 
 const today = new Date()
 const yesterday = new Date(today)
 yesterday.setDate(yesterday.getDate() - 28);
 
 class Test extends React.Component {
-    constructor(props){
+    constructor(props) {
         super()
         this.state = {
           ticker: [],
@@ -33,21 +37,22 @@ class Test extends React.Component {
           chartUrl: [],
           tickerDescription: [],
           news:[],
+          exchange:[],
+          yearLow:[],
+          yearHigh:[],
           query: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+// Back End
+    // Test back end to see if it works
+    // https://www.bezkoder.com/node-js-mongodb-auth-jwt/#Configure_MongoDB_database
 // Data Table
-    // - Show only 10 rows [x]
-    // - Border bottom for rows?
-    // - Closing data
-        // - green arrow = close > open
-        // - red arrow = close < open
+    // - sort data the opposite 
 // Stonk Info
-    // - 52 week high
-    // - 52 week low
-    // - Closing quote for today
+// Navbar
+    // Fix navbar / implement current into previous 
 // Layout Exmaples
     // - Google Finance
 
@@ -82,10 +87,23 @@ class Test extends React.Component {
                 .then(({ data }) => {
                     this.setState({news: data});
                 });
+                axios.get(`${COMPANY_PROFILE_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
+                .then(({ data }) => {
+                    this.setState({tickerDescription: []});
+                    this.setState({exchange: []});
+                    this.setState({tickerDescription: this.state.tickerDescription.concat(data.name)});
+                    this.setState({exchange: this.state.exchange.concat(data.exchange)})
+                });
+                axios.get(`${FINANCIALS_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
+                .then(({ data }) => {
+                    this.setState({yearLow: []});
+                    this.setState({yearHigh: []});
+                    this.setState({yearLow: this.state.yearLow.concat(data.metric["52WeekLow"])});
+                    this.setState({yearHigh: this.state.yearHigh.concat(data.metric["52WeekHigh"])});
+                    console.log(data.metric["52WeekHigh"]);
+                });
             });
-            this.setState({tickerDescription: []});
             this.setState({chartUrl: []});
-            this.setState({tickerDescription: this.state.tickerDescription.concat(data.result[0].description.split("-", 1))});
             this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
         })
     }
@@ -104,70 +122,85 @@ class Test extends React.Component {
                     {this.state.ticker.map((x, index) => (
                         <div className="main container">
                             <div className="row">
-                            <div className="col-md-12">
-                            <button>Add To Portfolio [+]</button>
-                            <p>{this.state.tickerDescription[index]}</p>
-                            <p>${this.state.tickerDailyQuote[index]}</p>
-                            {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
-                            {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
-                            <iframe className="chart" title="Candle chart" width="83%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
-                            </div>
-                            <div className="col-md-1"></div>
-                            <div className="col-md-6">
-                            <TableContainer className="dataTable" component={Paper}>
-                                <Table size="small" aria-label="a dense table">
-                                    <TableHead>
-                                    <TableRow>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell>High</TableCell>
-                                        <TableCell>Low</TableCell>
-                                        <TableCell>Open</TableCell>
-                                        <TableCell>Close</TableCell>
-                                    </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell>
-                                                {this.state.dateData[index] && this.state.dateData[index].map((x, index) => (
-                                                    <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p>
-                                                ))}
-                                            </TableCell>
-                                            <TableCell>
-                                                {this.state.highData[index] && this.state.highData[index].map((x, index) => (
-                                                    <p>{x}</p>
-                                                ))}
-                                            </TableCell>
-                                            <TableCell>
-                                                {this.state.lowData[index] && this.state.lowData[index].map((x, index) => (
-                                                    <p>{x}</p>
-                                                ))}
-                                            </TableCell>
-                                            <TableCell>
-                                                {this.state.openData[index] && this.state.openData[index].map((x, index) => (
-                                                    <p>{x}</p>
-                                                ))}
-                                            </TableCell>
-                                            <TableCell>
-                                                {this.state.closingData[index] && this.state.closingData[index].map((x, index) => (
-                                                    <p>{x.toPrecision(4)}</p>
-                                                ))}
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            </div>
+                                <div className="col-md-1"></div>
                                 <div className="col-md-4">
-                                    <p> Recent News</p>
-                                    {this.state.news.slice(0, 3).map((x, index) => (
-                                        <div className="col-md-12">
-                                            <a rel="noreferrer" target="_blank" href={x.url}>
-                                                <p>{x.headline}</p>
-                                            </a>
-                                        </div>
-                                    ))}
+                                    <button>Add To Portfolio [+]</button>
+                                    <p>{this.state.tickerDescription[index]}</p>
+                                    <p>${this.state.tickerDailyQuote[index]}</p>
+                                    {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
+                                    {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
+                                    <p>Key Data</p>
+                                    <p>Exchange: {this.state.exchange}</p>
+                                    <p>Day Range: ${this.state.lowData[index] && this.state.lowData[index][this.state.lowData[index].length - 1]} - ${this.state.highData[index] && this.state.highData[index][this.state.highData[index].length - 1]}</p>
+                                    <p>Year Range: ${this.state.yearLow} - ${this.state.yearHigh} </p>
                                 </div>
-                            <div className="col-md-1"></div>
+                                <div className="col-md-6">
+                                    <iframe className="chart" title="Candle chart" width="100%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
+                                </div>
+                                <div className="col-md-1"></div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-1"></div>
+                                <div className="col-md-4">
+                                        <p> Recent News</p>
+                                        {this.state.news.slice(0, 5).map((x, index) => (
+                                            <div className="col-md-12">
+                                                <a rel="noreferrer" target="_blank" href={x.url}>
+                                                    <p>{x.headline}</p>
+                                                </a>
+                                            </div>
+                                        ))}
+                                </div>
+                                <div className="col-md-6">
+                                <TableContainer className="dataTable" component={Paper}>
+                                    <Table size="small" aria-label="a dense table">
+                                        <TableHead>
+                                        <TableRow>
+                                            <TableCell>Date</TableCell>
+                                            <TableCell>High</TableCell>
+                                            <TableCell>Low</TableCell>
+                                            <TableCell>Open</TableCell>
+                                            <TableCell>Close</TableCell>
+                                        </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell>
+                                                    {this.state.dateData[index] && this.state.dateData[index].map((x, index) => (
+                                                        <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p>
+                                                    ))}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {this.state.highData[index] && this.state.highData[index].map((x, index) => (
+                                                        <p>{x}</p>
+                                                    ))}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {this.state.lowData[index] && this.state.lowData[index].map((x, index) => (
+                                                        <p>{x}</p>
+                                                    ))}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {this.state.openData[index] && this.state.openData[index].map((x, index) => (
+                                                        <p>{x}</p>
+                                                    ))}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {this.state.closingData[index] && this.state.closingData[index].map((x, index, arr) => {
+                                                        const prevItem = arr[index - 1];
+                                                        return (
+                                                            <p className="tableClosingData">
+                                                                {x > prevItem ? <span className="positive"><ArrowDropUpIcon/> {x}</span> : <span className="negative"><ArrowDropDownIcon/> {x}</span>}
+                                                            </p>
+                                                        )
+                                                    })}
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                                </div>
+                                <div className="col-md-1"></div>
                             </div>
                         </div>
                     ))}

@@ -29,7 +29,7 @@
 }
 
 .search {
-  margin-top: 50px;
+  margin: 50px auto;
   text-align: center;
 }
 
@@ -105,4 +105,12 @@ label {
 .positive {
   color: green;
   font-weight: bold;
+}
+
+.MuiTableCell-root p {
+  margin-bottom: 20px;
+}
+
+.MuiTableCell-root .tableClosingData {
+  margin-bottom: 16px;
 }
