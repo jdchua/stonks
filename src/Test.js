@@ -48,6 +48,9 @@ class Test extends React.Component {
 // Back End
     // Test back end to see if it works
     // https://www.bezkoder.com/node-js-mongodb-auth-jwt/#Configure_MongoDB_database
+// Extras
+    // Loading Spinner
+    // Cascade load components
 // Data Table
     // - sort data the opposite 
 // Stonk Info
@@ -124,7 +127,7 @@ class Test extends React.Component {
                             <div className="row">
                                 <div className="col-md-1"></div>
                                 <div className="col-md-4">
-                                    <button>Add To Portfolio [+]</button>
+                                    <button className="addToPortfolio">Add To Portfolio [+]</button>
                                     <p>{this.state.tickerDescription[index]}</p>
                                     <p>${this.state.tickerDailyQuote[index]}</p>
                                     {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
