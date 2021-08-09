@@ -19,6 +19,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
 
+import { Switch, Route, Link } from "react-router-dom";
+import AuthService from "./services/auth.service";
+
+import Login from "./components/login.component";
+import Register from "./components/register.component";
+import Home from "./components/home.component";
+import Profile from "./components/profile.component";
+import BoardUser from "./components/board-user.component";
+import BoardModerator from "./components/board-moderator.component";
+import BoardAdmin from "./components/board-admin.component";
+
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -94,6 +106,9 @@ export default function MiniDrawer() {
   const [nflx, setNflx] = React.useState(0);
   const [googl, setGoogl] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  const [showModeratorBoard, setShowModeratorBoard] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(undefined);
+  const [showAdminBoard, setShowAdminBoard] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -119,7 +134,18 @@ export default function MiniDrawer() {
     axios.get(`https://finnhub.io/api/v1/quote?symbol=GOOGL&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setGoogl(data["c"].toPrecision(6));
     });
-    setCount(1)
+
+
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setCurrentUser(user);
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
+
+    setCount(1);
+
   }, [count])
 
   return (
@@ -143,6 +169,11 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
+          <Typography variant="h6" className="navStocks" noWrap>
+            <Link to={"/"} className="navbar-brand">
+              Stonkers
+            </Link>
+          </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             FB
             <br />
@@ -168,6 +199,62 @@ export default function MiniDrawer() {
             <br />
             {googl}
           </Typography>
+
+          <div className="navbar-nav ml-auto" style={{ flex: 1 }}>
+            {showModeratorBoard && (
+              <li className="nav-item">
+                <Link to={"/mod"} className="nav-link">
+                  Moderator Board
+                </Link>
+              </li>
+            )}
+
+            {showAdminBoard && (
+              <li className="nav-item">
+                <Link to={"/admin"} className="nav-link">
+                  Admin Board
+                </Link>
+              </li>
+            )}
+
+            {currentUser && (
+              <li className="nav-item">
+                <Link to={"/user"} className="nav-link">
+                  User
+                </Link>
+              </li>
+            )}
+          </div>
+
+          {currentUser ? (
+            <div className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link to={"/profile"} className="nav-link">
+                  {currentUser.username}
+                </Link>
+              </li>
+              <li className="nav-item">
+                <a href="/login" className="nav-link" onClick={this.logOut}>
+                  LogOut
+                </a>
+              </li>
+            </div>
+          ) : (
+            <div className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link to={"/login"} className="nav-link">
+                  Login
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to={"/register"} className="nav-link">
+                  Sign Up
+                </Link>
+              </li>
+            </div>
+          )}
+
         </Toolbar>
       </AppBar>
       <Drawer
@@ -202,6 +289,18 @@ export default function MiniDrawer() {
       <br></br>
       <br></br>
       <br></br>
+
+        <div className="container mt-3">
+          <Switch>
+            <Route exact path={["/", "/home"]} component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/profile" component={Profile} />
+            <Route path="/user" component={BoardUser} />
+            <Route path="/mod" component={BoardModerator} />
+            <Route path="/admin" component={BoardAdmin} />
+          </Switch>
+        </div>
     </div>
   );
 }
