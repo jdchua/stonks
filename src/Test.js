@@ -128,9 +128,9 @@ class Test extends React.Component {
                                 <div className="col-md-4">
                                     <button className="addToPortfolio">Add To Portfolio [+]</button>
                                     <p>{this.state.tickerDescription[index]}</p>
-                                    <p>${this.state.tickerDailyQuote[index]}</p>
-                                    {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
-                                    {this.state.closingData[index] && (this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.tickerDailyQuote[index] - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
+                                    <p>${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
+                                    {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
+                                    {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
                                     <p>Key Data</p>
                                     <p>Exchange: {this.state.exchange}</p>
                                     <p>Day Range: ${this.state.lowData[index] && this.state.lowData[index][this.state.lowData[index].length - 1]} - ${this.state.highData[index] && this.state.highData[index][this.state.highData[index].length - 1]}</p>
@@ -192,7 +192,7 @@ class Test extends React.Component {
                                                         const prevItem = arr[index - 1];
                                                         return (
                                                             <p className="tableClosingData">
-                                                                {x > prevItem ? <span className="positive"><ArrowDropUpIcon/> {x}</span> : <span className="negative"><ArrowDropDownIcon/> {x}</span>}
+                                                                {x > prevItem ? <span className="positive"><ArrowDropUpIcon/> {x}</span> : <span className="negative"><ArrowDropDownIcon/> {x.toPrecision(4)}</span>}
                                                             </p>
                                                         )
                                                     })}
