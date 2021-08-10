@@ -40,6 +40,7 @@ class Test extends React.Component {
           exchange:[],
           yearLow:[],
           yearHigh:[],
+          dailyVolume: [],
           query: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -79,11 +80,19 @@ class Test extends React.Component {
                     this.setState({lowData: []});
                     this.setState({openData: []});
                     this.setState({dateData: []});
+                    this.setState({dailyVolume: []});
                     this.setState({closingData: [...this.state.closingData, [...tickerData[0][1]]]});
                     this.setState({highData: [...this.state.highData, [...tickerData[1][1]]]});
                     this.setState({lowData: [...this.state.lowData, [...tickerData[2][1]]]});
                     this.setState({openData: [...this.state.openData, [...tickerData[3][1]]]});
                     this.setState({dateData: [...this.state.dateData, [...tickerData[5][1]]]});
+
+                    var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
+                    var tier = Math.log10(Math.abs(tickerData[6][1][tickerData[6][1].length - 1])) / 3 | 0;
+                    var suffix = SI_SYMBOL[tier];
+                    var scale = Math.pow(10, tier * 3);
+                    var scaled = [tickerData[6][1][tickerData[6][1].length - 1]]  / scale;
+                    this.setState({dailyVolume: tier === 0 ? [tickerData[6][1][tickerData[6][1].length - 1]] :  scaled.toFixed(2) + suffix})
                 });
                 axios.get(`${NEWS_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${yesterday.toISOString().split('T')[0]}&to=${today.toISOString().split('T')[0]}`)
                 .then(({ data }) => {
@@ -102,7 +111,6 @@ class Test extends React.Component {
                     this.setState({yearHigh: []});
                     this.setState({yearLow: this.state.yearLow.concat(data.metric["52WeekLow"])});
                     this.setState({yearHigh: this.state.yearHigh.concat(data.metric["52WeekHigh"])});
-                    console.log(data.metric["52WeekHigh"]);
                 });
             });
             this.setState({chartUrl: []});
@@ -135,6 +143,7 @@ class Test extends React.Component {
                                     <p>Exchange: {this.state.exchange}</p>
                                     <p>Day Range: ${this.state.lowData[index] && this.state.lowData[index][this.state.lowData[index].length - 1]} - ${this.state.highData[index] && this.state.highData[index][this.state.highData[index].length - 1]}</p>
                                     <p>Year Range: ${this.state.yearLow} - ${this.state.yearHigh} </p>
+                                    <p>Volume: {this.state.dailyVolume}</p>
                                 </div>
                                 <div className="col-md-6">
                                     <iframe className="chart" title="Candle chart" width="100%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
