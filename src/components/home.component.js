@@ -56,8 +56,8 @@ class Test extends React.Component {
     // Test back end to see if it works
     // https://www.bezkoder.com/node-js-mongodb-auth-jwt/#Configure_MongoDB_database
 // Extras
-    // Loading Spinner
-    // Cascade load components
+    // Add delete icon in search bar
+    // Setup err catching
 // Data Table
     // - sort data the opposite 
 // Stonk Info
@@ -125,9 +125,6 @@ class Test extends React.Component {
             this.setState({chartUrl: []});
             this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
 
-
-            this.setState({loading: false});
-            this.state.loading ? document.getElementsByClassName("main")[0].style.display = "none" : document.getElementsByClassName("main")[0].style.display = "block";
             setTimeout(() => {
                 this.setState({loading: false});
             }, 2000);
@@ -142,7 +139,9 @@ class Test extends React.Component {
         return (
             <div>
                 <div>
-                    <RingLoader size={50} loading={this.state.loading} />
+                    <div className="loader">
+                        <RingLoader size={75} loading={this.state.loading} />
+                    </div>
                     <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
                         <TextField className="searchInput" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined"/>
                     </form>
@@ -150,7 +149,7 @@ class Test extends React.Component {
                         <div className="main container">
                             <div className="row">
                                 <div className="col-md-1"></div>
-                                <Grow in={true}>
+                                <Grow in={!this.state.loading}>
                                     <div className="col-md-4">
                                         <button className="addToPortfolio">Add To Portfolio [+]</button>
                                         <p>{this.state.tickerDescription[index]}</p>
@@ -164,7 +163,7 @@ class Test extends React.Component {
                                         <p>Volume: {this.state.dailyVolume}</p>
                                     </div>
                                 </Grow>
-                                <Grow in={true} style={{ transformOrigin: '0 0 0' }} {...(this.state.loading ? { timeout: 500 } : {})}>
+                                <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 500 } : {})}>
                                     <div className="col-md-6">
                                         <iframe className="chart" title="Candle chart" width="100%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
                                     </div>
@@ -173,7 +172,7 @@ class Test extends React.Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-1"></div>
-                                <Grow in={true} style={{ transformOrigin: '0 0 0' }} {...(this.state.loading ? { timeout: 1500 } : {})}>
+                                <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
                                     <div className="col-md-4">
                                             <p> Recent News</p>
                                             {this.state.news.slice(0, 4).map((x, index) => (
@@ -185,7 +184,7 @@ class Test extends React.Component {
                                             ))}
                                     </div>
                                 </Grow>
-                                <Grow in={true} style={{ transformOrigin: '0 0 0' }} {...(this.state.loading ? { timeout: 1000 } : {})}>
+                                <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1000 } : {})}>
                                     <div className="col-md-6">
                                     <TableContainer className="dataTable" component={Paper}>
                                         <Table size="small" aria-label="a dense table">
@@ -225,7 +224,7 @@ class Test extends React.Component {
                                                             const prevItem = arr[index - 1];
                                                             return (
                                                                 <p className="tableClosingData">
-                                                                    {x > prevItem ? <span className="positive"><ArrowDropUpIcon/> {x}</span> : <span className="negative"><ArrowDropDownIcon/> {x.toPrecision(4)}</span>}
+                                                                    {x > prevItem ? <span className="positive"><ArrowDropUpIcon/> {x.toPrecision(4)}</span> : <span className="negative"><ArrowDropDownIcon/> {x.toPrecision(4)}</span>}
                                                                 </p>
                                                             )
                                                         })}

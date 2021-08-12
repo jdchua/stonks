@@ -137,3 +137,7 @@ label {
   font-weight: bold;
 }
 
+.loader {
+  position: absolute;
+  margin: 15% 33%;
+}
