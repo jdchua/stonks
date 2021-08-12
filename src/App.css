@@ -57,7 +57,12 @@
 
 .navStocks {
   text-align: center;
-  margin: 0px 30px !important;
+  margin: 5px 25px !important;
+  padding: 4px 20px;
+  font-size: 12px !important;
+  background: #36407d;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #070b27;
 }
 
 .MuiAppBar-colorPrimary {

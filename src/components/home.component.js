@@ -62,6 +62,7 @@ class Test extends React.Component {
     // - sort data the opposite 
 // Stonk Info
 // Navbar
+    // Add red or green arrows
 // Layout Exmaples
     // - Google Finance
 

@@ -169,7 +169,7 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className="navStocks" noWrap>
+          <Typography variant="h6" noWrap>
             <Link to={"/"} className="navbar-brand">
               Stonkers
             </Link>
