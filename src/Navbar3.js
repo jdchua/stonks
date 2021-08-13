@@ -18,6 +18,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { Switch, Route, Link } from "react-router-dom";
 import AuthService from "./services/auth.service";
@@ -145,7 +147,6 @@ export default function MiniDrawer() {
         setGooglChange(data["d"]);
     });
 
-
     const user = AuthService.getCurrentUser();
 
     if (user) {
@@ -187,32 +188,32 @@ export default function MiniDrawer() {
           <Typography variant="h6" className="navStocks" noWrap>
             FB
             <br />
-            {fbChange && fbChange > 0 && <span className="positive">{fb}+</span>}
-            {fbChange && fbChange < 0 && <span className="negative">{fb}-</span>} 
+            {fbChange && fbChange > 0 && <span className="positive">{fb}<ArrowDropUpIcon/></span>}
+            {fbChange && fbChange < 0 && <span className="negative">{fb}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             APPL 
             <br />
-            {applChange && applChange > 0 && <span className="positive">{appl}+</span>}
-            {applChange && applChange < 0 && <span className="negative">{appl}-</span>} 
+            {applChange && applChange > 0 && <span className="positive">{appl}<ArrowDropUpIcon/></span>}
+            {applChange && applChange < 0 && <span className="negative">{appl}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             AMZN 
             <br />
-            {amznChange && amznChange > 0 && <span className="positive">{amzn}+</span>}
-            {amznChange && amznChange < 0 && <span className="negative">{amzn}-</span>} 
+            {amznChange && amznChange > 0 && <span className="positive">{amzn}<ArrowDropUpIcon/></span>}
+            {amznChange && amznChange < 0 && <span className="negative">{amzn}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             NFLX 
             <br />
-            {nflxChange && nflxChange > 0 && <span className="positive">{nflx}+</span>}
-            {nflxChange && nflxChange < 0 && <span className="negative">{nflx}-</span>} 
+            {nflxChange && nflxChange > 0 && <span className="positive">{nflx}<ArrowDropUpIcon/></span>}
+            {nflxChange && nflxChange < 0 && <span className="negative">{nflx}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             GOOGL 
             <br />
-            {googlChange && googlChange > 0 && <span className="positive">{googl}+</span>}
-            {googlChange && googlChange < 0 && <span className="negative">{googl}-</span>} 
+            {googlChange && googlChange > 0 && <span className="positive">{googl}<ArrowDropUpIcon/></span>}
+            {googlChange && googlChange < 0 && <span className="negative">{googl}<ArrowDropDownIcon/></span>} 
           </Typography>
 
           <div className="navbar-nav ml-auto" style={{ flex: 1 }}>
