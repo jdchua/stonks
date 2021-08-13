@@ -12,8 +12,6 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import Grow from '@material-ui/core/Grow';
-
-
 import RingLoader from "react-spinners/RingLoader";
 
 const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=%23222222&amp;textColor=white";
@@ -82,7 +80,7 @@ class Test extends React.Component {
                     this.setState({tickerDailyQuote: []});
                     this.setState({tickerDailyQuote: this.state.tickerDailyQuote.concat(dailyQuoteArray[0].toPrecision(4))});
                 });
-                axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${Math.round(Date.now() / 1000) - 864000}&to=${Date.now()}`)
+                axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${Math.round(Date.now() / 1000) - 864000}&to=${Math.round(Date.now() / 1000)}`)
                 .then(({data}) => {
                     let tickerData = Object.entries(data);
                     this.setState({closingData: []});
@@ -155,6 +153,7 @@ class Test extends React.Component {
                                         <button className="addToPortfolio">Add To Portfolio [+]</button>
                                         <p>{this.state.tickerDescription[index]}</p>
                                         <p>${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
+                                        {}
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
                                         <p>Key Data</p>

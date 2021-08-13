@@ -101,10 +101,15 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [appl, setAppl] = React.useState(0);
+  const [applChange, setApplChange] = React.useState(0);
   const [amzn, setAmzn] = React.useState(0);
+  const [amznChange, setAmznChange] = React.useState(0);
   const [fb, setFb] = React.useState(0);
+  const [fbChange, setFbChange] = React.useState(0);
   const [nflx, setNflx] = React.useState(0);
+  const [nflxChange, setNflxChange] = React.useState(0);
   const [googl, setGoogl] = React.useState(0);
+  const [googlChange, setGooglChange] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [showModeratorBoard, setShowModeratorBoard] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(undefined);
@@ -121,18 +126,23 @@ export default function MiniDrawer() {
   useEffect(() => {
     axios.get(`https://finnhub.io/api/v1/quote?symbol=FB&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setFb(data["c"].toPrecision(5));
+        setFbChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setAppl(data["c"].toPrecision(5));
+        setApplChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=AMZN&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setAmzn(data["c"].toPrecision(6));
+        setAmznChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=NFLX&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setNflx(data["c"].toPrecision(5));
+        setNflxChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=GOOGL&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setGoogl(data["c"].toPrecision(6));
+        setGooglChange(data["d"]);
     });
 
 
@@ -177,27 +187,32 @@ export default function MiniDrawer() {
           <Typography variant="h6" className="navStocks" noWrap>
             FB
             <br />
-            {fb}
+            {fbChange && fbChange > 0 && <span className="positive">{fb}+</span>}
+            {fbChange && fbChange < 0 && <span className="negative">{fb}-</span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             APPL 
             <br />
-            {appl}
+            {applChange && applChange > 0 && <span className="positive">{appl}+</span>}
+            {applChange && applChange < 0 && <span className="negative">{appl}-</span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             AMZN 
             <br />
-            {amzn}
+            {amznChange && amznChange > 0 && <span className="positive">{amzn}+</span>}
+            {amznChange && amznChange < 0 && <span className="negative">{amzn}-</span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             NFLX 
             <br />
-            {nflx}
+            {nflxChange && nflxChange > 0 && <span className="positive">{nflx}+</span>}
+            {nflxChange && nflxChange < 0 && <span className="negative">{nflx}-</span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             GOOGL 
             <br />
-            {googl}
+            {googlChange && googlChange > 0 && <span className="positive">{googl}+</span>}
+            {googlChange && googlChange < 0 && <span className="negative">{googl}-</span>} 
           </Typography>
 
           <div className="navbar-nav ml-auto" style={{ flex: 1 }}>
