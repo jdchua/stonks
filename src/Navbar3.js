@@ -97,7 +97,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 export default function MiniDrawer() {
+
 
   const classes = useStyles();
   const theme = useTheme();
@@ -158,6 +161,11 @@ export default function MiniDrawer() {
     setCount(1);
 
   }, [count])
+
+ const logOut = () => {
+    AuthService.logout();
+  }
+
 
   return (
     <div className={classes.root}>
@@ -233,13 +241,13 @@ export default function MiniDrawer() {
               </li>
             )}
 
-            {currentUser && (
+            {/* {currentUser && (
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
                   User
                 </Link>
               </li>
-            )}
+            )} */}
           </div>
 
           {currentUser ? (
@@ -250,7 +258,7 @@ export default function MiniDrawer() {
                 </Link>
               </li>
               <li className="nav-item">
-                <a href="/login" className="nav-link" onClick={this.logOut}>
+                <a href="/login" className="nav-link" onClick={logOut}>
                   LogOut
                 </a>
               </li>

@@ -146,3 +146,7 @@ label {
   position: absolute;
   margin: 15% 33%;
 }
+
+.profile {
+  margin-top: 120px !important;
+}
