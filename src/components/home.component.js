@@ -44,6 +44,7 @@ class Test extends React.Component {
           yearLow:[],
           yearHigh:[],
           dailyVolume: [],
+          prevClose: [],
           loading: false,
           query: ""
         }
@@ -59,6 +60,7 @@ class Test extends React.Component {
 // Data Table
     // - sort data the opposite 
 // Stonk Info
+    // Day range
 // Navbar
 // Layout Exmaples
     // - Google Finance
@@ -77,7 +79,10 @@ class Test extends React.Component {
                 .then(({ data }) => {
                     let dailyQuoteArray = Object.values(data);
                     this.setState({tickerDailyQuote: []});
+                    this.setState({prevClose: []});
                     this.setState({tickerDailyQuote: this.state.tickerDailyQuote.concat(dailyQuoteArray[0].toPrecision(4))});
+                    this.setState({prevClose: this.state.prevClose.concat(dailyQuoteArray[6])});
+
                 });
                 axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${Math.round(Date.now() / 1000) - 864000}&to=${Math.round(Date.now() / 1000)}`)
                 .then(({data}) => {
@@ -110,7 +115,7 @@ class Test extends React.Component {
                     this.setState({tickerDescription: []});
                     this.setState({exchange: []});
                     this.setState({tickerDescription: this.state.tickerDescription.concat(data.name)});
-                    this.setState({exchange: this.state.exchange.concat(data.exchange)})
+                    this.setState({exchange: this.state.exchange.concat(data.exchange.split(" ")[0])})
                 });
                 axios.get(`${FINANCIALS_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({ data }) => {
@@ -156,7 +161,8 @@ class Test extends React.Component {
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} Today</p>} 
                                         <p>Key Data</p>
-                                        <p>Exchange: {this.state.exchange}</p>
+                                        <p>Primary Exchange: {this.state.exchange}</p>
+                                        <p>Previous Close: {this.state.prevClose}</p>
                                         <p>Day Range: ${this.state.lowData[index] && this.state.lowData[index][this.state.lowData[index].length - 1]} - ${this.state.highData[index] && this.state.highData[index][this.state.highData[index].length - 1]}</p>
                                         <p>Year Range: ${this.state.yearLow} - ${this.state.yearHigh} </p>
                                         <p>Volume: {this.state.dailyVolume}</p>
