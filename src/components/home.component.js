@@ -53,17 +53,18 @@ class Test extends React.Component {
     }
 
 // Back End
-    // Test back end to see if it works
-    // https://www.bezkoder.com/node-js-mongodb-auth-jwt/#Configure_MongoDB_database
 // Extras
     // Add delete icon in search bar
     // Setup err catching
 // Data Table
-    // - sort data the opposite 
+    // Sort data the opposite 
 // Stonk Info
+    // Add Today's open price
+// News
+    // Add source
+    // Add image
+    // Add "x ago" timestamp
 // Navbar
-// Layout Exmaples
-    // - Google Finance
 
     handleSubmit (event) {
         this.setState({loading: true});
