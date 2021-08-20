@@ -14,7 +14,10 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Grow from '@material-ui/core/Grow';
 import RingLoader from "react-spinners/RingLoader";
 
+import moment from 'moment';
+
 const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=%23222222&amp;textColor=white";
+const BUY_RATING_CHART_URL = "https://widget.finnhub.io/widgets/recommendation?symbol="
 const TICKER_URL = "https://finnhub.io/api/v1/search?token=c1lmcqq37fkqle0e1u80";
 const DAILYQUOTE_URL = "https://finnhub.io/api/v1/quote?token=c1lmcqq37fkqle0e1u80";
 const TICKERDATA_URL = "https://finnhub.io/api/v1/stock/candle?resolution=D&token=c1lmcqq37fkqle0e1u80";
@@ -38,6 +41,7 @@ class Test extends React.Component {
           openData: [],
           dateData: [],
           chartUrl: [],
+          buyerRatingUrl: [],
           tickerDescription: [],
           news:[],
           exchange:[],
@@ -46,6 +50,7 @@ class Test extends React.Component {
           dailyVolume: [],
           prevClose: [],
           percentChange: [],
+          openPrice: [],
           loading: false,
           query: ""
         }
@@ -59,7 +64,6 @@ class Test extends React.Component {
 // Data Table
     // Sort data the opposite 
 // Stonk Info
-    // Add Today's open price
 // News
     // Add source
     // Add image
@@ -79,12 +83,13 @@ class Test extends React.Component {
                 axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({ data }) => {
                     let dailyQuoteArray = Object.values(data);
-                    console.log(dailyQuoteArray[2]);
                     this.setState({tickerDailyQuote: []});
                     this.setState({prevClose: []});
                     this.setState({percentChange: []});
+                    this.setState({openPrice: []});
                     this.setState({tickerDailyQuote: this.state.tickerDailyQuote.concat(dailyQuoteArray[0].toPrecision(4))});
                     this.setState({prevClose: this.state.prevClose.concat(dailyQuoteArray[6])});
+                    this.setState({openPrice: this.state.openPrice.concat(dailyQuoteArray[5])});
                     this.setState({percentChange: this.state.percentChange.concat(dailyQuoteArray[2].toPrecision(4))});
                 });
                 axios.get(`${TICKERDATA_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}&from=${Math.round(Date.now() / 1000) - 864000}&to=${Math.round(Date.now() / 1000)}`)
@@ -118,7 +123,7 @@ class Test extends React.Component {
                     this.setState({tickerDescription: []});
                     this.setState({exchange: []});
                     this.setState({tickerDescription: this.state.tickerDescription.concat(data.name)});
-                    this.setState({exchange: this.state.exchange.concat(data.exchange.split(" ")[0])})
+                    data.exchange === undefined ? this.setState({exchange: this.state.exchange.concat("-----")}) : this.setState({exchange: this.state.exchange.concat(data.exchange.split(" ")[0])});
                 });
                 axios.get(`${FINANCIALS_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
                 .then(({ data }) => {
@@ -129,8 +134,10 @@ class Test extends React.Component {
                 });
             });
             this.setState({chartUrl: []});
-            this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
+            this.setState({buyerRatingUrl: []});
 
+            this.setState({chartUrl: this.state.chartUrl.concat(CHART_URL + "&symbol=" + data.result[0].displaySymbol)});
+            this.setState({buyerRatingUrl: this.state.buyerRatingUrl.concat(BUY_RATING_CHART_URL + data.result[0].displaySymbol)});
             setTimeout(() => {
                 this.setState({loading: false});
             }, 2000);
@@ -164,6 +171,7 @@ class Test extends React.Component {
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropDownIcon/>Today</p>} 
                                         <p>Key Data</p>
                                         <p>Primary Exchange: {this.state.exchange}</p>
+                                        <p>Today's Open: {this.state.openPrice}</p>
                                         <p>Previous Close: {this.state.prevClose}</p>
                                         <p>Day Range: ${this.state.lowData[index] && this.state.lowData[index][this.state.lowData[index].length - 1]} - ${this.state.highData[index] && this.state.highData[index][this.state.highData[index].length - 1]}</p>
                                         <p>Year Range: ${this.state.yearLow} - ${this.state.yearHigh} </p>
@@ -181,14 +189,24 @@ class Test extends React.Component {
                                 <div className="col-md-1"></div>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
                                     <div className="col-md-4">
-                                            <p> Recent News</p>
-                                            {this.state.news.slice(0, 4).map((x, index) => (
+                                            {/* <p> Recent News</p>
+                                            {this.state.news.slice(0, 5).map((x, index) => (
                                                 <div className="col-md-12">
+                                                    <span>{x.source}</span><span> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span>
                                                     <a rel="noreferrer" target="_blank" href={x.url}>
-                                                        <p>{x.headline}</p>
+                                                        <div className="row">
+                                                            <div className="col-md-9 headline">
+                                                                <p>{x.headline}</p>
+                                                            </div>
+                                                            <div className="col-md-3">
+                                                                <img className="newsImg" alt="" src={x.image === "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyIObBD3VaLcMyjDo28mrM4w7wh8QgfYYkZiNpVaEdGJs_dN4o2_aLJPr-m5NHXeTr3GE&usqp=CAU" : x.image}></img>
+                                                            </div>
+                                                        </div>
                                                     </a>
                                                 </div>
-                                            ))}
+                                            ))} */}
+                                        <iframe title="Buy Rating Chart" width="100%" frameborder="0" height="410" src={this.state.buyerRatingUrl}></iframe>
+
                                     </div>
                                 </Grow>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1000 } : {})}>
@@ -243,6 +261,30 @@ class Test extends React.Component {
                                     </div>
                                 </Grow>
                                 <div className="col-md-1"></div>
+                                <div className="row">
+                                    <div className="col-md-1"></div>
+                                    <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
+                                        <div className="col-md-10">
+                                                <p> Recent News</p>
+                                                {this.state.news.slice(0, 5).map((x, index) => (
+                                                    <div className="col-md-12">
+                                                        <span>{x.source}</span><span> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span>
+                                                        <a rel="noreferrer" target="_blank" href={x.url}>
+                                                            <div className="row">
+                                                                <div className="col-md-9 headline">
+                                                                    <p>{x.headline}</p>
+                                                                </div>
+                                                                <div className="col-md-3">
+                                                                    <img className="newsImg" alt="" src={x.image === "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyIObBD3VaLcMyjDo28mrM4w7wh8QgfYYkZiNpVaEdGJs_dN4o2_aLJPr-m5NHXeTr3GE&usqp=CAU" : x.image}></img>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    </Grow>
+                                    <div className="col-md-1"></div>
+                                </div>
                             </div>
                         </div>
                     ))}
