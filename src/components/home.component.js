@@ -16,8 +16,8 @@ import RingLoader from "react-spinners/RingLoader";
 
 import moment from 'moment';
 
-const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=%23222222&amp;textColor=white";
-const BUY_RATING_CHART_URL = "https://widget.finnhub.io/widgets/recommendation?symbol="
+const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=white;textColor=black";
+const BUY_RATING_CHART_URL = "https://widget.finnhub.io/widgets/recommendation?backgroundColor=white;textColor=black;symbol="
 const TICKER_URL = "https://finnhub.io/api/v1/search?token=c1lmcqq37fkqle0e1u80";
 const DAILYQUOTE_URL = "https://finnhub.io/api/v1/quote?token=c1lmcqq37fkqle0e1u80";
 const TICKERDATA_URL = "https://finnhub.io/api/v1/stock/candle?resolution=D&token=c1lmcqq37fkqle0e1u80";
