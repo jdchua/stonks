@@ -65,9 +65,6 @@ class Test extends React.Component {
     // Sort data the opposite 
 // Stonk Info
 // News
-    // Add source
-    // Add image
-    // Add "x ago" timestamp
 // Navbar
 
     handleSubmit (event) {
@@ -163,7 +160,7 @@ class Test extends React.Component {
                             <div className="row">
                                 <div className="col-md-1"></div>
                                 <Grow in={!this.state.loading}>
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 keyInfo">
                                         <button className="addToPortfolio">Add To Portfolio [+]</button>
                                         <p>{this.state.tickerDescription[index]}</p>
                                         <p>${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
@@ -180,7 +177,7 @@ class Test extends React.Component {
                                 </Grow>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 500 } : {})}>
                                     <div className="col-md-6">
-                                        <iframe className="chart" title="Candle chart" width="100%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
+                                        <iframe className="candlesChart" title="Candle chart" width="100%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
                                     </div>
                                 </Grow>
                                 <div className="col-md-1"></div>
@@ -188,7 +185,7 @@ class Test extends React.Component {
                             <div className="row">
                                 <div className="col-md-1"></div>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 buyRatingChart">
                                             {/* <p> Recent News</p>
                                             {this.state.news.slice(0, 5).map((x, index) => (
                                                 <div className="col-md-12">
@@ -205,7 +202,7 @@ class Test extends React.Component {
                                                     </a>
                                                 </div>
                                             ))} */}
-                                        <iframe title="Buy Rating Chart" width="100%" frameborder="0" height="410" src={this.state.buyerRatingUrl}></iframe>
+                                        <iframe title="Buy Rating Chart" width="100%" frameborder="0" height="325" src={this.state.buyerRatingUrl}></iframe>
 
                                     </div>
                                 </Grow>
@@ -262,12 +259,12 @@ class Test extends React.Component {
                                 </Grow>
                                 <div className="col-md-1"></div>
                                 <div className="row">
-                                    <div className="col-md-1"></div>
+                                    <div className="col-md-2"></div>
                                     <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
-                                        <div className="col-md-10">
-                                                <p> Recent News</p>
+                                        <div className="col-md-8 news">
+                                                <p>In The News</p>
                                                 {this.state.news.slice(0, 5).map((x, index) => (
-                                                    <div className="col-md-12">
+                                                    <div className="col-md-12 individualNews">
                                                         <span>{x.source}</span><span> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span>
                                                         <a rel="noreferrer" target="_blank" href={x.url}>
                                                             <div className="row">
@@ -283,7 +280,7 @@ class Test extends React.Component {
                                                 ))}
                                         </div>
                                     </Grow>
-                                    <div className="col-md-1"></div>
+                                    <div className="col-md-2"></div>
                                 </div>
                             </div>
                         </div>

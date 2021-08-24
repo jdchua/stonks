@@ -160,6 +160,35 @@ label {
   height: 70px;
  }
 
- .headline {
-   text-align: left;
- }
+.headline {
+  text-align: left;
+}
+
+.buyRatingChart, .candlesChart, .dataTable { 
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #dadada;
+  background: white;
+}
+
+.keyInfo { 
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #dadada;
+  height: 500px;
+  padding: 10px;
+  background: white;
+}
+
+.news {
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #dadada;
+  background: white; 
+  padding: 20px;
+  margin-top: 20px !important;
+}
+
+.individualNews { 
+  border-bottom: 1px solid black;
+}
