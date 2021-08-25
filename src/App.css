@@ -44,6 +44,7 @@
 .dataTable {
   width: 100% !important;
   margin: 0 auto;
+  padding: 5px;
 }
 
 .main {
@@ -157,7 +158,7 @@ label {
 
 .newsImg { 
   width: 100%;
-  height: 70px;
+  height: 90px;
  }
 
 .headline {
@@ -189,6 +190,28 @@ label {
   margin-top: 20px !important;
 }
 
+.news .title {
+  font-weight: 900;
+  font-size: 18px;
+}
+
 .individualNews { 
+  border-bottom: 1px solid #dcdbdb;
+  padding: 25px 0px;
+}
+
+.individualNews p {
+  text-align: left;
+}
+
+.individualData {
+  justify-content: space-between;
+  display: flex;
+  padding-bottom: 10px;
   border-bottom: 1px solid black;
+}
+
+.keyData {
+  width: 80%; 
+  margin: 0 auto;
 }

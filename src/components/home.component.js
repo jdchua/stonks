@@ -10,10 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-
 import Grow from '@material-ui/core/Grow';
 import RingLoader from "react-spinners/RingLoader";
-
 import moment from 'moment';
 
 const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=white;textColor=black";
@@ -59,8 +57,10 @@ class Test extends React.Component {
 
 // Back End
 // Extras
+    // Search results when typing in ticker
     // Add delete icon in search bar
     // Setup err catching
+    // Create fake account login 
 // Data Table
     // Sort data the opposite 
 // Stonk Info
@@ -166,13 +166,15 @@ class Test extends React.Component {
                                         <p>${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropUpIcon/>Today</p>} 
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropDownIcon/>Today</p>} 
-                                        <p>Key Data</p>
-                                        <p>Primary Exchange: {this.state.exchange}</p>
-                                        <p>Today's Open: {this.state.openPrice}</p>
-                                        <p>Previous Close: {this.state.prevClose}</p>
-                                        <p>Day Range: ${this.state.lowData[index] && this.state.lowData[index][this.state.lowData[index].length - 1]} - ${this.state.highData[index] && this.state.highData[index][this.state.highData[index].length - 1]}</p>
-                                        <p>Year Range: ${this.state.yearLow} - ${this.state.yearHigh} </p>
-                                        <p>Volume: {this.state.dailyVolume}</p>
+                                        <div className="keyData">
+                                            <p>Key Data</p>
+                                            <p className="individualData"><span className="leftKey">Primary Exchange:</span><span className="rightKey">{this.state.exchange}</span></p>
+                                            <p className="individualData"><span className="leftKey">Today's Open:</span><span className="rightKey">{this.state.openPrice}</span></p>
+                                            <p className="individualData"><span className="leftKey">Previous Close:</span><span className="rightKey">{this.state.prevClose}</span></p>
+                                            <p className="individualData"><span className="leftKey">Day Range:</span><span className="rightKey">${this.state.lowData[index] && this.state.lowData[index][this.state.lowData[index].length - 1]} - ${this.state.highData[index] && this.state.highData[index][this.state.highData[index].length - 1]}</span></p>
+                                            <p className="individualData"><span className="leftKey">Year Range:</span><span className="rightKey">${this.state.yearLow} - ${this.state.yearHigh}</span></p>
+                                            <p className="individualData"><span className="leftKey">Volume:</span><span className="rightKey">{this.state.dailyVolume}</span></p>
+                                        </div>
                                     </div>
                                 </Grow>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 500 } : {})}>
@@ -186,24 +188,7 @@ class Test extends React.Component {
                                 <div className="col-md-1"></div>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
                                     <div className="col-md-4 buyRatingChart">
-                                            {/* <p> Recent News</p>
-                                            {this.state.news.slice(0, 5).map((x, index) => (
-                                                <div className="col-md-12">
-                                                    <span>{x.source}</span><span> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span>
-                                                    <a rel="noreferrer" target="_blank" href={x.url}>
-                                                        <div className="row">
-                                                            <div className="col-md-9 headline">
-                                                                <p>{x.headline}</p>
-                                                            </div>
-                                                            <div className="col-md-3">
-                                                                <img className="newsImg" alt="" src={x.image === "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyIObBD3VaLcMyjDo28mrM4w7wh8QgfYYkZiNpVaEdGJs_dN4o2_aLJPr-m5NHXeTr3GE&usqp=CAU" : x.image}></img>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            ))} */}
                                         <iframe title="Buy Rating Chart" width="100%" frameborder="0" height="325" src={this.state.buyerRatingUrl}></iframe>
-
                                     </div>
                                 </Grow>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1000 } : {})}>
@@ -262,10 +247,10 @@ class Test extends React.Component {
                                     <div className="col-md-2"></div>
                                     <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
                                         <div className="col-md-8 news">
-                                                <p>In The News</p>
+                                                <p className="title">In The News</p>
                                                 {this.state.news.slice(0, 5).map((x, index) => (
                                                     <div className="col-md-12 individualNews">
-                                                        <span>{x.source}</span><span> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span>
+                                                        <p >{x.source} <span> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span></p>
                                                         <a rel="noreferrer" target="_blank" href={x.url}>
                                                             <div className="row">
                                                                 <div className="col-md-9 headline">
