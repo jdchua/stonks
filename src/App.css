@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.body {
+body {
   background-color: white;
 }
 
@@ -170,6 +170,7 @@ label {
   border-radius: 5px;
   box-shadow: 2px 2px 2px #dadada;
   background: white;
+  color: white;
 }
 
 .keyInfo { 
@@ -214,4 +215,31 @@ label {
 .keyData {
   width: 80%; 
   margin: 0 auto;
+  margin-top: 25px;
 }
+
+.companyName { 
+  color: #295880;
+  font-size: 23px;
+  font-weight: bold;
+ }
+
+ .currentPrice {
+   font-size: 20px;
+   font-weight: bold;
+ }
+
+ .keyInfo .positive, .keyInfo .negative {
+   font-size: 17px;
+   font-weight: bold;
+ }
+
+ .leftKey { 
+   font-style: italic;
+   font-weight: bold;
+   color: #295880;
+  }
+
+  .rightKey {
+    font-weight: bold;
+  }

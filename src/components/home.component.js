@@ -14,7 +14,7 @@ import Grow from '@material-ui/core/Grow';
 import RingLoader from "react-spinners/RingLoader";
 import moment from 'moment';
 
-const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954&amp;backgroundColor=white;textColor=black";
+const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954;backgroundColor=white;textColor=black";
 const BUY_RATING_CHART_URL = "https://widget.finnhub.io/widgets/recommendation?backgroundColor=white;textColor=black;symbol="
 const TICKER_URL = "https://finnhub.io/api/v1/search?token=c1lmcqq37fkqle0e1u80";
 const DAILYQUOTE_URL = "https://finnhub.io/api/v1/quote?token=c1lmcqq37fkqle0e1u80";
@@ -162,12 +162,12 @@ class Test extends React.Component {
                                 <Grow in={!this.state.loading}>
                                     <div className="col-md-4 keyInfo">
                                         <button className="addToPortfolio">Add To Portfolio [+]</button>
-                                        <p>{this.state.tickerDescription[index]}</p>
-                                        <p>${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
+                                        <p className="companyName">{this.state.tickerDescription[index]}</p>
+                                        <p className="currentPrice">${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropUpIcon/>Today</p>} 
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropDownIcon/>Today</p>} 
                                         <div className="keyData">
-                                            <p>Key Data</p>
+                                            {/* <p>Key Data</p> */}
                                             <p className="individualData"><span className="leftKey">Primary Exchange:</span><span className="rightKey">{this.state.exchange}</span></p>
                                             <p className="individualData"><span className="leftKey">Today's Open:</span><span className="rightKey">{this.state.openPrice}</span></p>
                                             <p className="individualData"><span className="leftKey">Previous Close:</span><span className="rightKey">{this.state.prevClose}</span></p>
