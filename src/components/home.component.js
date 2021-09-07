@@ -61,7 +61,6 @@ class Test extends React.Component {
 
 // Back End
 // Extras
-    // Search results when typing in ticker
     // Setup err catching
     // Create fake account login 
 // Data Table
@@ -78,6 +77,7 @@ class Test extends React.Component {
         let query = this.state.query;
         axios.get(`${TICKER_URL}&q=${query.replace(/\s/g, "")}`)
         .then(({ data }) => {
+            console.log(data);
             this.setState({ticker: []});
             this.setState({ticker: this.state.ticker.concat([data.result[0].displaySymbol])}, () => {
                 axios.get(`${DAILYQUOTE_URL}&symbol=${this.state.ticker[this.state.ticker.length - 1]}`)
@@ -106,7 +106,6 @@ class Test extends React.Component {
                     this.setState({lowData: [...this.state.lowData, [...tickerData[2][1]]]});
                     this.setState({openData: [...this.state.openData, [...tickerData[3][1]]]});
                     this.setState({dateData: [...this.state.dateData, [...tickerData[5][1]]]});
-
                 
                     var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
                     var tier = Math.log10(Math.abs(tickerData[6][1][tickerData[6][1].length - 1])) / 3 | 0;
@@ -188,10 +187,11 @@ class Test extends React.Component {
                                 <div className="col-md-1"></div>
                             </div>
                             <div className="row">
+                                
                                 <div className="col-md-1"></div>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
                                     <div className="col-md-4 buyRatingChart">
-                                        <iframe title="Buy Rating Chart" width="100%" frameborder="0" height="325" src={this.state.buyerRatingUrl}></iframe>
+                                        <iframe title="Buy Rating Chart" width="100%" frameborder="0" height="320" style={{color: "black", fill: "black"}} src={this.state.buyerRatingUrl}></iframe>
                                     </div>
                                 </Grow>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1000 } : {})}>
@@ -250,30 +250,30 @@ class Test extends React.Component {
                                     </div>
                                 </Grow>
                                 <div className="col-md-1"></div>
-                                <div className="row">
-                                    <div className="col-md-2"></div>
-                                    <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
-                                        <div className="col-md-8 news">
-                                                <p className="title">In The News</p>
-                                                {this.state.news.slice(0, 5).map((x, index) => (
-                                                    <div className="col-md-12 individualNews">
-                                                        <p >{x.source} <span> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span></p>
-                                                        <a rel="noreferrer" target="_blank" href={x.url}>
-                                                            <div className="row">
-                                                                <div className="col-md-9 headline">
-                                                                    <p>{x.headline}</p>
-                                                                </div>
-                                                                <div className="col-md-3">
-                                                                    <img className="newsImg" alt="" src={x.image === "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyIObBD3VaLcMyjDo28mrM4w7wh8QgfYYkZiNpVaEdGJs_dN4o2_aLJPr-m5NHXeTr3GE&usqp=CAU" : x.image}></img>
-                                                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-2"></div>
+                                <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 1500 } : {})}>
+                                    <div className="col-md-8 news">
+                                            <p className="title">In The News</p>
+                                            {this.state.news.slice(0, 5).map((x, index) => (
+                                                <div className="col-md-12 individualNews">
+                                                    <p class="source">{x.source} <span class="dateOfNews"> - {moment.unix(x.datetime).startOf('hour').fromNow() }</span></p>
+                                                    <a rel="noreferrer" target="_blank" href={x.url}>
+                                                        <div className="row">
+                                                            <div className="col-md-9 headline">
+                                                                <p>{x.headline}</p>
                                                             </div>
-                                                        </a>
-                                                    </div>
-                                                ))}
-                                        </div>
-                                    </Grow>
-                                    <div className="col-md-2"></div>
-                                </div>
+                                                            <div className="col-md-3">
+                                                                <img className="newsImg" alt="" src={x.image === "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyIObBD3VaLcMyjDo28mrM4w7wh8QgfYYkZiNpVaEdGJs_dN4o2_aLJPr-m5NHXeTr3GE&usqp=CAU" : x.image}></img>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </Grow>
+                                <div className="col-md-2"></div>
                             </div>
                         </div>
                     ))}
