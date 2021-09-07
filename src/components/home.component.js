@@ -104,6 +104,8 @@ class Test extends React.Component {
                     this.setState({openData: [...this.state.openData, [...tickerData[3][1]]]});
                     this.setState({dateData: [...this.state.dateData, [...tickerData[5][1]]]});
 
+                    console.log(this.state.dateData);
+
                     var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
                     var tier = Math.log10(Math.abs(tickerData[6][1][tickerData[6][1].length - 1])) / 3 | 0;
                     var suffix = SI_SYMBOL[tier];
@@ -167,7 +169,6 @@ class Test extends React.Component {
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropUpIcon/>Today</p>} 
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) < 0 && <p className="negative">{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropDownIcon/>Today</p>} 
                                         <div className="keyData">
-                                            {/* <p>Key Data</p> */}
                                             <p className="individualData"><span className="leftKey">Primary Exchange:</span><span className="rightKey">{this.state.exchange}</span></p>
                                             <p className="individualData"><span className="leftKey">Today's Open:</span><span className="rightKey">{this.state.openPrice}</span></p>
                                             <p className="individualData"><span className="leftKey">Previous Close:</span><span className="rightKey">{this.state.prevClose}</span></p>
@@ -208,7 +209,11 @@ class Test extends React.Component {
                                                 <TableRow>
                                                     <TableCell>
                                                         {this.state.dateData[index] && this.state.dateData[index].map((x, index) => (
-                                                            <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p>
+                                                            <div>
+                                                            <p>{(new Date(x * 1000).getMonth()+ 1) + "/" + (new Date(x * 1000).getDate() + 1) + "/" + new Date(x * 1000).getFullYear() }</p>
+                                                            {/* <p>{x}</p> */}
+                                                            {/* <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p> */}
+                                                            </div>
                                                         ))}
                                                     </TableCell>
                                                     <TableCell>

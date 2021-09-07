@@ -45,6 +45,11 @@ body {
   width: 100% !important;
   margin: 0 auto;
   padding: 5px;
+  min-height: 330px;
+}
+
+.buyRatingChart {
+  min-height: 330px;
 }
 
 .main {
@@ -82,6 +87,7 @@ label {
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;
+  margin-top: 200px;
 }
 
 .card {
