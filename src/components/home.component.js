@@ -12,6 +12,10 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Grow from '@material-ui/core/Grow';
 import RingLoader from "react-spinners/RingLoader";
+
+import IconButton from '@material-ui/core/IconButton';
+import ClearIcon from '@material-ui/icons/Clear';
+
 import moment from 'moment';
 
 const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954;backgroundColor=white;textColor=black";
@@ -58,7 +62,6 @@ class Test extends React.Component {
 // Back End
 // Extras
     // Search results when typing in ticker
-    // Add delete icon in search bar
     // Setup err catching
     // Create fake account login 
 // Data Table
@@ -104,8 +107,7 @@ class Test extends React.Component {
                     this.setState({openData: [...this.state.openData, [...tickerData[3][1]]]});
                     this.setState({dateData: [...this.state.dateData, [...tickerData[5][1]]]});
 
-                    console.log(this.state.dateData);
-
+                
                     var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
                     var tier = Math.log10(Math.abs(tickerData[6][1][tickerData[6][1].length - 1])) / 3 | 0;
                     var suffix = SI_SYMBOL[tier];
@@ -155,7 +157,7 @@ class Test extends React.Component {
                         <RingLoader size={75} loading={this.state.loading} />
                     </div>
                     <form class="search" noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-                        <TextField className="searchInput" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined"/>
+                        <TextField className="searchInput" type="text" onChange={this.handleInputChange} inputRef={ref => { this.inputRef = ref; }} id="outlined-basic" label="Search" variant="outlined" InputProps={{ endAdornment: this.state.query && (<IconButton aria-label="toggle password visibility" onClick={() =>  { this.inputRef.value = "" } }><ClearIcon/></IconButton>)}}/>
                     </form>
                     {this.state.ticker.map((x, index) => (
                         <div className="main container">
