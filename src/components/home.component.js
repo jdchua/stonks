@@ -13,6 +13,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Grow from '@material-ui/core/Grow';
 import RingLoader from "react-spinners/RingLoader";
 
+import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -68,7 +69,6 @@ class Test extends React.Component {
 // Stonk Info
 // News
 // Navbar
-    // Sidebar Nav - redirect user if clicked when not logged in
 
     handleSubmit (event) {
         this.setState({loading: true});
@@ -165,7 +165,7 @@ class Test extends React.Component {
                                 <div className="col-md-1"></div>
                                 <Grow in={!this.state.loading}>
                                     <div className="col-md-4 keyInfo">
-                                        <button className="addToPortfolio">Add To Portfolio [+]</button>
+                                        <button className="addToPortfolio">Add To Portfolio <AddCircleOutlineSharpIcon/></button>
                                         <p className="companyName">{this.state.tickerDescription[index]}</p>
                                         <p className="currentPrice">${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
                                         {this.state.closingData[index] && (this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4) > 0 && <p className="positive">+{(this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4) - this.state.closingData[index][this.state.closingData[index].length - 2]).toPrecision(4)} &#40;{this.state.percentChange}%&#41;<ArrowDropUpIcon/>Today</p>} 

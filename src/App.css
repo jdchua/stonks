@@ -79,16 +79,15 @@ body {
 
 .navStocks {
   text-align: center;
-  margin: 5px 25px !important;
-  padding: 4px 20px;
+  margin: 5px 25px 10px 25px !important;
+  padding: 8px 20px 4px 20px;
   font-size: 12px !important;
-  background: #272b44;
+  background: #161617;
   border-radius: 5px;
-  box-shadow: 2px 2px 2px #070b27;
 }
 
 .MuiAppBar-colorPrimary {
-  background-color: #0c1652 !important;
+  background-color: black !important;
 }
 
 label {
@@ -129,6 +128,10 @@ label {
   border-radius: 50%;
 }
 
+.negative:-webkit-autofill::first-line {
+  font-weight: bold;
+}
+
 .negative {
   color: red;
   font-weight: bold;
@@ -149,6 +152,13 @@ label {
 
 .addToPortfolio {
   margin-bottom: 25px;
+  font-weight: bold;
+  background: #295887;
+  padding: 5px 10px;
+  border-radius: 21px;
+  border: 1px solid #295887;
+  box-shadow: 1px 2px 1px #173654;
+  color: white;
 }
 
 .navbar-nav { 
@@ -186,6 +196,10 @@ label {
 
 .headline {
   text-align: left;
+}
+
+.headline:hover {
+  text-decoration: underline;
 }
 
 .buyRatingChart, .candlesChart, .dataTable { 
