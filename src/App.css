@@ -280,3 +280,12 @@ label {
     color:#295880;
     font-weight: 600;
   }
+
+  .sideNavItem a { 
+    text-decoration: none;
+    color: #0c1652;
+   }
+
+  .sideNavItem a span { 
+    font-weight: 600;
+  }

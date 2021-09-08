@@ -301,12 +301,32 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {['Portfolio', 'Bookmarked'].map((text, index) => (
+          {/* {['Portfolio', 'Bookmarked'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <WorkTwoToneIcon /> : <BookmarkTwoToneIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
-          ))}
+          ))} */}
+            <ListItem button className="sideNavItem">
+                <a href="/profile">
+                    <ListItemIcon>
+                      <WorkTwoToneIcon />
+                    </ListItemIcon>
+                </a>
+                <a href="/profile">
+                  <ListItemText primary="Portfolio"/>
+                </a>
+            </ListItem>
+            <ListItem button className="sideNavItem">
+                <a href="/bookmarks">
+                  <ListItemIcon>
+                    <BookmarkTwoToneIcon />
+                  </ListItemIcon>
+                </a>
+                <a href="/bookmarks">
+                  <ListItemText primary="Bookmarks"/>
+                </a>
+            </ListItem>
         </List>
         <Divider />
       </Drawer>

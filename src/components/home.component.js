@@ -68,6 +68,7 @@ class Test extends React.Component {
 // Stonk Info
 // News
 // Navbar
+    // Sidebar Nav - redirect user if clicked when not logged in
 
     handleSubmit (event) {
         this.setState({loading: true});
