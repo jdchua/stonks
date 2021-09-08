@@ -300,34 +300,61 @@ export default function MiniDrawer() {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {/* {['Portfolio', 'Bookmarked'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <WorkTwoToneIcon /> : <BookmarkTwoToneIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))} */}
-            <ListItem button className="sideNavItem">
-                <a href="/profile">
+
+        {currentUser ? (
+          <List>
+            {/* {['Portfolio', 'Bookmarked'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{index % 2 === 0 ? <WorkTwoToneIcon /> : <BookmarkTwoToneIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))} */}
+              <ListItem button className="sideNavItem">
+                  <a href="/profile">
+                      <ListItemIcon>
+                        <WorkTwoToneIcon />
+                      </ListItemIcon>
+                  </a>
+                  <a href="/profile">
+                    <ListItemText primary="Portfolio"/>
+                  </a>
+              </ListItem>
+              <ListItem button className="sideNavItem">
+                  <a href="/bookmarks">
                     <ListItemIcon>
-                      <WorkTwoToneIcon />
+                      <BookmarkTwoToneIcon />
                     </ListItemIcon>
-                </a>
-                <a href="/profile">
-                  <ListItemText primary="Portfolio"/>
-                </a>
-            </ListItem>
-            <ListItem button className="sideNavItem">
-                <a href="/bookmarks">
-                  <ListItemIcon>
-                    <BookmarkTwoToneIcon />
-                  </ListItemIcon>
-                </a>
-                <a href="/bookmarks">
-                  <ListItemText primary="Bookmarks"/>
-                </a>
-            </ListItem>
-        </List>
+                  </a>
+                  <a href="/bookmarks">
+                    <ListItemText primary="Bookmarks"/>
+                  </a>
+              </ListItem>
+          </List>
+        ) : (        
+          <List>
+              <ListItem button className="sideNavItem">
+                  <a href="/login">
+                      <ListItemIcon>
+                        <WorkTwoToneIcon />
+                      </ListItemIcon>
+                  </a>
+                  <a href="/login">
+                    <ListItemText primary="Portfolio"/>
+                  </a>
+              </ListItem>
+              <ListItem button className="sideNavItem">
+                  <a href="/login">
+                    <ListItemIcon>
+                      <BookmarkTwoToneIcon />
+                    </ListItemIcon>
+                  </a>
+                  <a href="/login">
+                    <ListItemText primary="Bookmarks"/>
+                  </a>
+              </ListItem>
+          </List>
+        )}
+
         <Divider />
       </Drawer>
       <br></br>
