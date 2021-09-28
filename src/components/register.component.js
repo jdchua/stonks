@@ -202,6 +202,14 @@ export default class Register extends Component {
             />
           </Form>
         </div>
+        <div class="register-or-login">
+          <p>OR</p>
+          <a href="/login">
+            <button className="btn btn-primary btn-block">
+              <span>Login</span>
+            </button>
+          </a>
+        </div>
       </div>
     );
   }

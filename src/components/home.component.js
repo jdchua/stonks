@@ -164,7 +164,7 @@ class Test extends React.Component {
                             <div className="row">
                                 <div className="col-md-1"></div>
                                 <Grow in={!this.state.loading}>
-                                    <div className="col-md-4 keyInfo">
+                                    <div className="col-md-4 col-12 keyInfo">
                                         <button className="addToPortfolio">Add To Portfolio <AddCircleOutlineSharpIcon/></button>
                                         <p className="companyName">{this.state.tickerDescription[index]}</p>
                                         <p className="currentPrice">${this.state.closingData[index] && this.state.closingData[index][this.state.closingData[index].length - 1].toPrecision(4)}</p>
@@ -181,7 +181,7 @@ class Test extends React.Component {
                                     </div>
                                 </Grow>
                                 <Grow in={!this.state.loading} style={{ transformOrigin: '0 0 0' }} {...(!this.state.loading ? { timeout: 500 } : {})}>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 col-12">
                                         <iframe className="candlesChart" title="Candle chart" width="100%" frameborder="0" height="500" src={this.state.chartUrl[index]}></iframe>
                                     </div>
                                 </Grow>
