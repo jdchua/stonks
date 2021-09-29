@@ -21,6 +21,7 @@ import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { Switch, Route, Link } from "react-router-dom";
 import AuthService from "./services/auth.service";
@@ -332,13 +333,13 @@ export default function MiniDrawer() {
             <div>
               <List>
                 <ListItem button className="sideNavItem">
-                    <a href="/login">
+                    <a href="/login" onClick={logOut}>
                       <ListItemIcon>
-                        <AccountCircleIcon />
+                        <ExitToAppIcon />
                       </ListItemIcon>
                     </a>
-                    <a href="/login">
-                      <ListItemText primary="Login"/>
+                    <a href="/login" onClick={logOut}>
+                      <ListItemText primary="Logout"/>
                     </a>
                 </ListItem>
               </List>

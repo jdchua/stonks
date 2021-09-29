@@ -305,13 +305,12 @@ label {
   }
 
   .mainSideNav {
-    height: 85vh;
+    height: 84vh;
   }
 
   .register-or-login {
     display: none;
   }
-
 
   @media only screen and (max-width: 600px) {
     .searchInput {
@@ -319,9 +318,9 @@ label {
     }
     .navStocks {
       text-align: center;
-      margin: 5px 7px 10px 0px !important;
-      padding: 8px 47px 4px 5px;
-      font-size: 12px !important;
+      margin: 3px !important;
+      padding: 5px 6px;
+      font-size: 8px !important;
       background: #161617;
       border-radius: 5px;
     }
@@ -339,8 +338,8 @@ label {
       margin-top: 0px;
       margin-bottom: 0px;
     }
-    .col-md-1, .col-md-2, .loginRegister {
-      display: none;
+    .col-md-1, .col-md-2, .loginRegister, .navbar-brand {
+      display: none !important;
     }
     .register-or-login {
       display: block;
@@ -349,4 +348,30 @@ label {
     .register-or-login p {
       font-weight: bold;
     }
+    .makeStyles-menuButton-4 {
+      margin-right: 5px !important;
+    }
+    .MuiTableCell-sizeSmall {
+      padding: 6px 6px 6px 6px !important;
+      font-size: 12px !important;
+    }
+
+    .individualNews {
+      padding: 25px 15px;
+    }
+    .newsImg {
+      height: 160px;
+    }
   }
+
+  @media only screen and (max-width: 768px) {
+    .col-md-1, .col-md-2, .loginRegister, .navbar-brand {
+      display: none !important;
+    }
+    .navStocks {
+      margin: 5px 0px 10px 13px !important;
+    }
+  }
+
+
+
