@@ -38,10 +38,11 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  // res.json({ message: "Welcome to bezkoder application." });
+  res.sendFile(__dirname + "/build/index.html");
 });
 
-app.all("/*", (req, res) => { res.sendFile(__dirname + "/build/index.html"); });
+// app.all("/*", (req, res) => { res.sendFile(__dirname + "/build/index.html"); });
 
 // routes
 require("./app/routes/auth.routes")(app);
