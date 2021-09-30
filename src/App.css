@@ -305,7 +305,7 @@ label {
   }
 
   .mainSideNav {
-    height: 84vh;
+    height: 77vh;
   }
 
   .register-or-login {
@@ -338,7 +338,7 @@ label {
       margin-top: 0px;
       margin-bottom: 0px;
     }
-    .col-md-1, .col-md-2, .loginRegister, .navbar-brand {
+    .col-md-1, .col-md-2, .navStocks {
       display: none !important;
     }
     .register-or-login {
@@ -365,11 +365,17 @@ label {
   }
 
   @media only screen and (max-width: 768px) {
-    .col-md-1, .col-md-2, .loginRegister, .navbar-brand {
+    .col-md-1, .col-md-2, .navStocks {
       display: none !important;
     }
     .navStocks {
       margin: 5px 0px 10px 13px !important;
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .navStocks {
+      margin: 5px 0px 10px 10px !important
     }
   }
 

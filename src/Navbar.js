@@ -22,6 +22,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HomeIcon from '@material-ui/icons/Home';
 import { Switch, Route, Link } from "react-router-dom";
 import AuthService from "./services/auth.service";
 import Login from "./components/login.component";
@@ -286,7 +287,18 @@ export default function MiniDrawer() {
           </IconButton>
         </div>
         <Divider />
-
+        <List>
+            <ListItem button className="sideNavItem">
+                <a href="/">
+                    <ListItemIcon>
+                      <HomeIcon />
+                    </ListItemIcon>
+                </a>
+                <a href="/">
+                  <ListItemText primary="Home"/>
+                </a>
+            </ListItem>
+        </List>
         {currentUser ? (
           <div>
             <div className="mainSideNav">
@@ -317,12 +329,12 @@ export default function MiniDrawer() {
             <div>
               <List>
                 <ListItem button className="sideNavItem">
-                    <a href="/login" onClick={logOut}>
+                    <a href="/" onClick={logOut}>
                       <ListItemIcon>
                         <ExitToAppIcon />
                       </ListItemIcon>
                     </a>
-                    <a href="/login" onClick={logOut}>
+                    <a href="/" onClick={logOut}>
                       <ListItemText primary="Logout"/>
                     </a>
                 </ListItem>
