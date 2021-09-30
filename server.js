@@ -11,6 +11,8 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use("/", express.static("build"))
+
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
@@ -36,8 +38,11 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  // res.json({ message: "Welcome to bezkoder application." });
+  res.sendFile(__dirname + "/build/index.html");
 });
+
+app.get("/*", (req, res) => { res.sendFile(__dirname + "/build/index.html"); });
 
 // routes
 require("./app/routes/auth.routes")(app);
