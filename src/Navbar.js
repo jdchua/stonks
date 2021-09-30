@@ -22,10 +22,8 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
 import { Switch, Route, Link } from "react-router-dom";
 import AuthService from "./services/auth.service";
-
 import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
@@ -33,7 +31,6 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
-
 
 const drawerWidth = 240;
 
@@ -99,11 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 export default function MiniDrawer() {
-
-
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -121,11 +114,9 @@ export default function MiniDrawer() {
   const [showModeratorBoard, setShowModeratorBoard] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(undefined);
   const [showAdminBoard, setShowAdminBoard] = React.useState(false);
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -242,7 +233,7 @@ export default function MiniDrawer() {
                 </Link>
               </li>
             )}
-            
+
           </div>
 
           {currentUser ? (
