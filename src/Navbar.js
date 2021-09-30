@@ -18,6 +18,22 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
+import { Switch, Route, Link } from "react-router-dom";
+import AuthService from "./services/auth.service";
+
+import Login from "./components/login.component";
+import Register from "./components/register.component";
+import Home from "./components/home.component";
+import Profile from "./components/profile.component";
+import BoardUser from "./components/board-user.component";
+import BoardModerator from "./components/board-moderator.component";
+import BoardAdmin from "./components/board-admin.component";
+
 
 const drawerWidth = 240;
 
@@ -83,17 +99,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 export default function MiniDrawer() {
+
 
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [appl, setAppl] = React.useState(0);
+  const [applChange, setApplChange] = React.useState(0);
   const [amzn, setAmzn] = React.useState(0);
+  const [amznChange, setAmznChange] = React.useState(0);
   const [fb, setFb] = React.useState(0);
+  const [fbChange, setFbChange] = React.useState(0);
   const [nflx, setNflx] = React.useState(0);
+  const [nflxChange, setNflxChange] = React.useState(0);
   const [googl, setGoogl] = React.useState(0);
+  const [googlChange, setGooglChange] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  const [showModeratorBoard, setShowModeratorBoard] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(undefined);
+  const [showAdminBoard, setShowAdminBoard] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -106,21 +133,41 @@ export default function MiniDrawer() {
   useEffect(() => {
     axios.get(`https://finnhub.io/api/v1/quote?symbol=FB&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setFb(data["c"].toPrecision(5));
+        setFbChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setAppl(data["c"].toPrecision(5));
+        setApplChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=AMZN&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setAmzn(data["c"].toPrecision(6));
+        setAmznChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=NFLX&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setNflx(data["c"].toPrecision(5));
+        setNflxChange(data["d"]);
     });
     axios.get(`https://finnhub.io/api/v1/quote?symbol=GOOGL&token=c1lmcqq37fkqle0e1u80`).then(({ data }) => {
         setGoogl(data["c"].toPrecision(6));
+        setGooglChange(data["d"]);
     });
-    setCount(1)
+
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setCurrentUser(user);
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
+
+    setCount(1);
+
   }, [count])
+
+ const logOut = () => {
+    AuthService.logout();
+  }
+
 
   return (
     <div className={classes.root}>
@@ -143,31 +190,90 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
+          <Typography variant="h6" noWrap>
+            <Link to={"/"} className="navbar-brand">
+              Stonkers
+            </Link>
+          </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             FB
             <br />
-            {fb}
+            {fbChange && fbChange > 0 && <span className="positive">{fb}<ArrowDropUpIcon/></span>}
+            {fbChange && fbChange < 0 && <span className="negative">{fb}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             APPL 
             <br />
-            {appl}
+            {applChange && applChange > 0 && <span className="positive">{appl}<ArrowDropUpIcon/></span>}
+            {applChange && applChange < 0 && <span className="negative">{appl}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             AMZN 
             <br />
-            {amzn}
+            {amznChange && amznChange > 0 && <span className="positive">{amzn}<ArrowDropUpIcon/></span>}
+            {amznChange && amznChange < 0 && <span className="negative">{amzn}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             NFLX 
             <br />
-            {nflx}
+            {nflxChange && nflxChange > 0 && <span className="positive">{nflx}<ArrowDropUpIcon/></span>}
+            {nflxChange && nflxChange < 0 && <span className="negative">{nflx}<ArrowDropDownIcon/></span>} 
           </Typography>
           <Typography variant="h6" className="navStocks" noWrap>
             GOOGL 
             <br />
-            {googl}
+            {googlChange && googlChange > 0 && <span className="positive">{googl}<ArrowDropUpIcon/></span>}
+            {googlChange && googlChange < 0 && <span className="negative">{googl}<ArrowDropDownIcon/></span>} 
           </Typography>
+
+          <div className="navbar-nav ml-auto" style={{ flex: 1 }}>
+            {showModeratorBoard && (
+              <li className="nav-item">
+                <Link to={"/mod"} className="nav-link">
+                  Moderator Board
+                </Link>
+              </li>
+            )}
+
+            {showAdminBoard && (
+              <li className="nav-item">
+                <Link to={"/admin"} className="nav-link">
+                  Admin Board
+                </Link>
+              </li>
+            )}
+            
+          </div>
+
+          {currentUser ? (
+            <div className="navbar-nav loginRegister ml-auto">
+              <li className="nav-item">
+                <Link to={"/profile"} className="nav-link">
+                  {currentUser.username}
+                </Link>
+              </li>
+              <li className="nav-item">
+                <a href="/login" className="nav-link" onClick={logOut}>
+                  LogOut
+                </a>
+              </li>
+            </div>
+          ) : (
+            <div className="navbar-nav loginRegister ml-auto">
+              <li className="nav-item">
+                <Link to={"/login"} className="nav-link">
+                  Login
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link to={"/register"} className="nav-link">
+                  Sign Up
+                </Link>
+              </li>
+            </div>
+          )}
+
         </Toolbar>
       </AppBar>
       <Drawer
@@ -189,19 +295,108 @@ export default function MiniDrawer() {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {['Portfolio', 'Bookmarked'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <WorkTwoToneIcon /> : <BookmarkTwoToneIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
+
+        {currentUser ? (
+          <div>
+            <div className="mainSideNav">
+            <List>
+                <ListItem button className="sideNavItem">
+                    <a href="/profile">
+                        <ListItemIcon>
+                          <WorkTwoToneIcon />
+                        </ListItemIcon>
+                    </a>
+                    <a href="/profile">
+                      <ListItemText primary="Portfolio"/>
+                    </a>
+                </ListItem>
+                <ListItem button className="sideNavItem">
+                    <a href="/bookmarks">
+                      <ListItemIcon>
+                        <BookmarkTwoToneIcon />
+                      </ListItemIcon>
+                    </a>
+                    <a href="/bookmarks">
+                      <ListItemText primary="Bookmarks"/>
+                    </a>
+                </ListItem>
+            </List>
+            </div>
+            <Divider />
+            <div>
+              <List>
+                <ListItem button className="sideNavItem">
+                    <a href="/login" onClick={logOut}>
+                      <ListItemIcon>
+                        <ExitToAppIcon />
+                      </ListItemIcon>
+                    </a>
+                    <a href="/login" onClick={logOut}>
+                      <ListItemText primary="Logout"/>
+                    </a>
+                </ListItem>
+              </List>
+            </div>
+          </div>
+        ) : (     
+          <div>   
+            <div className="mainSideNav">
+            <List>
+                <ListItem button className="sideNavItem">
+                    <a href="/login">
+                        <ListItemIcon>
+                          <WorkTwoToneIcon />
+                        </ListItemIcon>
+                    </a>
+                    <a href="/login">
+                      <ListItemText primary="Portfolio"/>
+                    </a>
+                </ListItem>
+                <ListItem button className="sideNavItem">
+                    <a href="/login">
+                      <ListItemIcon>
+                        <BookmarkTwoToneIcon />
+                      </ListItemIcon>
+                    </a>
+                    <a href="/login">
+                      <ListItemText primary="Bookmarks"/>
+                    </a>
+                </ListItem>
+            </List>
+            </div>
+            <Divider />
+            <div>
+            <List>
+              <ListItem button className="sideNavItem">
+                  <a href="/login">
+                    <ListItemIcon>
+                      <AccountCircleIcon />
+                    </ListItemIcon>
+                  </a>
+                  <a href="/login">
+                    <ListItemText primary="Login"/>
+                  </a>
+              </ListItem>
+            </List>
+            </div>
+          </div>
+        )}
       </Drawer>
       <br></br>
       <br></br>
       <br></br>
+
+        <div className="container mt-3">
+          <Switch>
+            <Route exact path={["/", "/home"]} component={Home} />
+            <Route exact path="/login" component={Login} onClick={()=>{window.location.href = '/login';}} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/profile" component={Profile} />
+            <Route path="/user" component={BoardUser} />
+            <Route path="/mod" component={BoardModerator} />
+            <Route path="/admin" component={BoardAdmin} />
+          </Switch>
+        </div>
     </div>
   );
 }

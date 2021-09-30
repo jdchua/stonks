@@ -12,11 +12,9 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Grow from '@material-ui/core/Grow';
 import RingLoader from "react-spinners/RingLoader";
-
 import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
-
 import moment from 'moment';
 
 const CHART_URL = "https://widget.finnhub.io/widgets/stocks/chart?watermarkColor=%231db954;backgroundColor=white;textColor=black";
@@ -27,7 +25,6 @@ const TICKERDATA_URL = "https://finnhub.io/api/v1/stock/candle?resolution=D&toke
 const NEWS_URL = "https://finnhub.io/api/v1/company-news?token=c1lmcqq37fkqle0e1u80";
 const COMPANY_PROFILE_URL = "https://finnhub.io/api/v1/stock/profile2?token=c1lmcqq37fkqle0e1u80";
 const FINANCIALS_URL = "https://finnhub.io/api/v1/stock/metric?metric=all&token=c1lmcqq37fkqle0e1u80"
-
 const today = new Date()
 const yesterday = new Date(today)
 yesterday.setDate(yesterday.getDate() - 28);
@@ -59,16 +56,6 @@ class Test extends React.Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-// Back End
-// Extras
-    // Setup err catching
-    // Create fake account login 
-// Data Table
-    // Sort data the opposite 
-// Stonk Info
-// News
-// Navbar
 
     handleSubmit (event) {
         this.setState({loading: true});

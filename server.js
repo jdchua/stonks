@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const dbConfig = require("./app/config/db.config");
-
 const app = express();
 
 var corsOptions = {
@@ -10,13 +8,8 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use("/", express.static("build"))
-
-// parse requests of content-type - application/json
 app.use(bodyParser.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/models");
@@ -38,7 +31,6 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  // res.json({ message: "Welcome to bezkoder application." });
   res.sendFile(__dirname + "/build/index.html");
 });
 
