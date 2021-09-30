@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/build/index.html");
 });
 
-app.all("/*", (req, res) => { res.sendFile(__dirname + "/build/index.html"); });
+app.get("/*", (req, res) => { res.sendFile(__dirname + "/build/index.html"); });
 
 // routes
 require("./app/routes/auth.routes")(app);
