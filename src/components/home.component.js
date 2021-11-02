@@ -200,9 +200,9 @@ class Test extends React.Component {
                                                     <TableCell>
                                                         {this.state.dateData[index] && this.state.dateData[index].map((x, index) => (
                                                             <div>
-                                                            <p>{(new Date(x * 1000).getMonth()+ 1) + "/" + (new Date(x * 1000).getDate() + 1) + "/" + new Date(x * 1000).getFullYear() }</p>
+                                                            {/* <p>{(new Date(x * 1000).getMonth()+ 1) + "/" + (new Date(x * 1000).getDate() + 1) + "/" + new Date(x * 1000).getFullYear() }</p> */}
                                                             {/* <p>{x}</p> */}
-                                                            {/* <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric"}))}</p> */}
+                                                            <p>{(new Date(x * 1000).toLocaleString("en-US", {month: "numeric", day: "numeric", year: "numeric", timeZone: "UTC"}))}</p>
                                                             </div>
                                                         ))}
                                                     </TableCell>
